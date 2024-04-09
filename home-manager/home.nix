@@ -16,8 +16,9 @@
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
 
-    # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
+    ./vim.nix
+    ./git.nix
+    ./bash.nix
   ];
 
   nixpkgs = {
@@ -57,18 +58,6 @@
   # home.packages = with pkgs; [ steam ];
 
   programs.home-manager.enable = true;
-
-  programs.bash.enable = true;
-
-  programs.git = {
-    enable = true;
-    userName = "David Ochsner";
-  };
-
-  programs.vim = {
-    enable = true;
-    defaultEditor = true;
-  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
