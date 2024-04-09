@@ -58,6 +58,8 @@
 
   programs.home-manager.enable = true;
 
+  programs.bash.enable = true;
+
   programs.git = {
     enable = true;
     userName = "David Ochsner";
@@ -65,7 +67,7 @@
 
   programs.vim = {
     enable = true;
-    defaultEditor = true;  # -- this is not respected!
+    defaultEditor = true;
   };
 
   # Nicely reload system units when changing configs
