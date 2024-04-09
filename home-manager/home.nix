@@ -19,6 +19,7 @@
     ./vim.nix
     ./git.nix
     ./bash.nix
+    (import ./emacs.nix { inherit config pkgs; })
   ];
 
   nixpkgs = {
