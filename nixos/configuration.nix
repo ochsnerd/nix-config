@@ -80,12 +80,6 @@
     auto-optimise-store = true;
   };
 
-  # TODO: Where is this supposed to go?
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
-
   # TODO: Check how this looks when not running in vm
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
