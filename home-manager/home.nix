@@ -65,7 +65,7 @@
 
   programs.vim = {
     enable = true;
-    defaultEditor = true;
+    defaultEditor = true;  # -- this is not respected!
   };
 
   # Nicely reload system units when changing configs
