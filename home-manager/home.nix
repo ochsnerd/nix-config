@@ -63,7 +63,10 @@
     userName = "David Ochsner";
   };
 
-  programs.vim.enable = true;
+  programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
