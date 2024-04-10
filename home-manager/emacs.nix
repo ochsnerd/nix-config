@@ -3,7 +3,7 @@
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs;
+    package = pkgs.emacs-unstable;
   };
 
   home.file = {
@@ -12,4 +12,6 @@
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix-config/home-manager/emacs.el";
     };
   };
+  # emacs daemon
+  services.emacs.package = pkgs.emacs-unstable;
 }

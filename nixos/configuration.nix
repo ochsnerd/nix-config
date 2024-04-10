@@ -88,6 +88,11 @@
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.x11 = true;
 
+  fonts.packages = with pkgs; [
+    fira-code
+    fira-code-symbols
+  ];
+
   networking.networkmanager.enable = true;
   networking.hostName = "david";
 
