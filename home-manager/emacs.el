@@ -70,11 +70,23 @@
 
 (set-face-attribute 'default nil :font "Fira Code" :height 120)
 
-(load-theme 'wombat)
+(use-package doom-themes
+  :config
+  (setq doom-themes-enabl-bold t
+	doom-themes-enable-italic t)
+  ;; (load-theme 'doom-tomorrow-night t)
+  (load-theme 'doom-palenight t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config))
 
 (use-package doom-modeline
   :config
   (doom-modeline-mode 1))
+
+;; Rainbow delimiters
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 ;; Linenumbers almost always
 (column-number-mode)
@@ -84,11 +96,6 @@
 		shell-mode-hook
 		eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; Rainbow delimiters
-(use-package rainbow-delimiters
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
 
 ;; Which key
 (use-package which-key
