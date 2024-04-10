@@ -91,6 +91,7 @@
   fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
+    fira-code-nerdfont
   ];
 
   networking.networkmanager.enable = true;
