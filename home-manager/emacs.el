@@ -146,6 +146,8 @@
 ;; (limited contexts for keybindings)
 
 ;; general
+;; example keymap https://github.com/tshu-w/.emacs.d/blob/master/lisp/core-keybinds.el
+;; https://github.com/skyler544/rex/blob/main/config/rex-keybinds.el
 (use-package general
   :config
   (general-create-definer spc-leader
@@ -155,9 +157,14 @@
     :non-normal-prefix "C-SPC")
   (spc-leader
     "w" 'evil-window-map
+    "h" 'help-command
+
     "." 'counsel-find-file
     "," 'counsel-ibuffer
-    "SPC" 'projectile-command-map))
+
+    "SPC" 'projectile-command-map
+
+    "gg" 'magit))
 
 ;; projectile
 (use-package projectile
@@ -179,3 +186,10 @@
 (use-package nix-mode
   :mode
   ("\\.nix\\'"))
+
+;; magit
+(use-package magit
+  :commands
+  (magit-status magit-get-current-branch)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
