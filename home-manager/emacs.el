@@ -56,9 +56,7 @@
    ("C-x b" . counsel-ibuffer)
    ("C-x C-f" . counsel-find-file)
    :map minibuffer-local-map
-   ("C-r" . 'counsel-minibuffer-history))
-  :config
-  (setq ivy-initial-alist nil)) ;; don't start searches with ^
+   ("C-r" . 'counsel-minibuffer-history)))
 
 (use-package ivy-rich
   :init
@@ -78,6 +76,8 @@
   (load-theme 'doom-palenight t)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
+
+(use-package all-the-icons)
 
 (use-package doom-modeline
   :config
@@ -115,3 +115,45 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
+
+;; evil
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  ;; :hook
+  ;; (evil-mode . rune/evil-hook)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  ;; Use viual line motions outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+;; hydra?
+;; (limited contexts for keybindings)
+
+;; general
+(use-package general
+  :config
+  (general-create-definer spc-leader
+    :states '(normal visual insert emacs)
+    :keymaps 'override
+    :prefic "SPC"
+    :non-normal-prefix "C-SPC")
+  (spc-leader
+    "w" 'evil-window-map
+    "." 'counsel-find-file
+    "," 'counsel-ibuffer))
