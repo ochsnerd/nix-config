@@ -151,9 +151,26 @@
   (general-create-definer spc-leader
     :states '(normal visual insert emacs)
     :keymaps 'override
-    :prefic "SPC"
+    :prefix "SPC"
     :non-normal-prefix "C-SPC")
   (spc-leader
     "w" 'evil-window-map
     "." 'counsel-find-file
-    "," 'counsel-ibuffer))
+    "," 'counsel-ibuffer
+    "SPC" 'projectile-command-map))
+
+;; projectile
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (projectile-mode)
+  :custom
+  ((projectile-completion-system 'ivy))
+  :init
+  ;; (when (file-directory-p "~/root-for-all-code")
+  ;;   (setq projectile-project-search-path '("~/root-for-all-code")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :config
+  (counsel-projectile-mode))
