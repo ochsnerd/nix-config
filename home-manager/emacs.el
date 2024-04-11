@@ -174,3 +174,8 @@
 (use-package counsel-projectile
   :config
   (counsel-projectile-mode))
+
+;; nix mode
+(use-package nix-mode
+  :mode
+  ("\\.nix\\'"))
