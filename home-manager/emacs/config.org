@@ -1,5 +1,5 @@
 #+TITLE: Emacs Configuration
-#+PROPERTY: header-args :results silent :tangle config.el
+#+PROPERTY: header-args :results silent :tangle yes
 
 * How this works
 
@@ -9,6 +9,9 @@
 - home-manager takes the files in this folder (as of now, ~config.org~ and ~init.el~)
   and copies them write-only into the store, then symlinks them into ~~/.config/emacs~
   - write-only forces me to update the files in the nix config and thus keeps it updated
+  - somehow it gets the timestamp set to 0. This is relevant as ~org-babel-load-file~ only
+    tangles if the timestamp of the ~.org~ file is newer than the ~.el~ file. To force retangling,
+    we have to delete ~config.el~ before loading ~config.org~.
 - on startup, emacs tangles codeblocks from here into ~config.el~, then loads the resulting file
   - this means the tangled config is always up to date with the nix config
   - probably pretty bad for startup time, depending on how the tangle works
@@ -35,7 +38,7 @@ https://github.com/MatthewZMD/.emacs.d
 
 TODO: Do we alwyas have to update package-archive-contents?
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")))
@@ -46,7 +49,7 @@ TODO: Do we alwyas have to update package-archive-contents?
 
 ** use-package
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (require 'use-package)
   (setq use-package-always-ensure t)
 #+end_src
@@ -55,7 +58,7 @@ TODO: Do we alwyas have to update package-archive-contents?
 
 Write custom variables into seperate file (so we don't touch init.el).
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (when (file-exists-p custom-file)
     (load custom-file))
@@ -66,7 +69,7 @@ Write custom variables into seperate file (so we don't touch init.el).
 
 Add keybindings to allow vim-like movement in completion lists.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package ivy
     :diminish  ;; don't show in modeline
     :bind
@@ -93,7 +96,7 @@ Add keybindings to allow vim-like movement in completion lists.
 
 ** counsel
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package counsel
     :bind
     (("M-x" . counsel-M-x)
@@ -105,7 +108,7 @@ Add keybindings to allow vim-like movement in completion lists.
 
 ** TODO company
 
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package company
     :diminish company-mode
     :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
@@ -148,7 +151,7 @@ Add keybindings to allow vim-like movement in completion lists.
 
 ** TODO yasnippet
 
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package yasnippet
     :diminish yas-minor-mode
     :init
@@ -176,7 +179,7 @@ Add keybindings to allow vim-like movement in completion lists.
 * Visual changes
 ** Correct defaults
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq inhibit-startup-message t)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
@@ -184,7 +187,7 @@ Add keybindings to allow vim-like movement in completion lists.
   (menu-bar-mode -1)
 #+end_src
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (set-fringe-mode 10)
 #+end_src
 
@@ -193,7 +196,7 @@ Add keybindings to allow vim-like movement in completion lists.
 Lock files are symlinks starting with ~.#~, preventing data loss if multiple
 users save the same file.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq create-lockfiles nil)
 #+end_src
 
@@ -201,13 +204,13 @@ users save the same file.
 
 Auto-save to the currently visited file.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (auto-save-visited-mode 1)
 #+end_src
 
 Write auto-save-files _also_ to ~/tmp~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq auto-save-file-name-transforms
 	`((".*" ,temporary-file-directory t)))
 #+end_src
@@ -216,19 +219,19 @@ Write auto-save-files _also_ to ~/tmp~.
 
 Write backups to ~/tmp~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq backup-directory-alist
 	`((".*" . ,temporary-file-directory)))
 #+end_src
 
 ** Visual bell
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq visible-bell t)
 #+end_src
 
 ** Linenumbers
-#+begin_src elisp
+#+begin_src emacs-lisp
   (column-number-mode)
   (global-display-line-numbers-mode t)
   (dolist (mode '(org-mode-hook
@@ -240,13 +243,13 @@ Write backups to ~/tmp~.
 
 ** Font
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (set-face-attribute 'default nil :font "Fira Code" :height 120)
 #+end_src
 
 ** Theme
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package doom-themes
     :config
     (setq
@@ -259,13 +262,13 @@ Write backups to ~/tmp~.
 
 *** Cool themes
 
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (load-theme 'doom-tomorrow-night t)
 #+end_src
 
 ** Modeline
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package all-the-icons)
 
   (use-package doom-modeline
@@ -275,7 +278,7 @@ Write backups to ~/tmp~.
 
 ** Rainbow delimiter
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :hook
     (prog-mode . rainbow-delimiters-mode))
@@ -284,7 +287,7 @@ Write backups to ~/tmp~.
 * Ergonomics
 ** which-key
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package which-key
     :diminish
     :init
@@ -295,7 +298,7 @@ Write backups to ~/tmp~.
 
 ** helpful
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package helpful
     :custom
     (counsel-describe-function-function #'helpful-callable)
@@ -310,14 +313,14 @@ Write backups to ~/tmp~.
 * Keybindings
 ** evil
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   ;; escape to escape
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 
 TODO: rune/evil-hook?
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package evil
     :init
     (setq evil-want-integration t)
@@ -416,10 +419,17 @@ short keybindings in limited contexts
     :mode
     ("\\.nix\\'"))
 #+end_src
+** haskell
+
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :mode
+    ("\\.hs\\'"))
+#+end_src
 
 * org
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package org
     :ensure nil
     :defer t
@@ -440,7 +450,7 @@ short keybindings in limited contexts
 
 ** org-modern
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package org-modern
     :hook
     ((org-mode org-agenda-finalize-mode) . org-modern-mode))
