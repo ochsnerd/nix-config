@@ -436,5 +436,12 @@ short keybindings in limited contexts
        (python . t)
        (plantuml . t)))
     )
-  #+end_src
-  
+#+end_src
+
+** org-modern
+
+#+begin_src elisp
+  (use-package org-modern
+    :hook
+    ((org-mode org-agenda-finalize-mode) . org-modern-mode))
+#+end_src
