@@ -13,10 +13,6 @@
       ];
     });
   };
-  # programs.emacs = {
-  #   enable = true;
-  #   package = pkgs.emacs-unstable;
-  # };
 
   home.file = {
     ".config/emacs" = {
@@ -25,5 +21,5 @@
     };
   };
   # emacs daemon
-  # services.emacs.package = pkgs.emacs-unstable;
+  services.emacs.package = pkgs.emacs-unstable;
 }
