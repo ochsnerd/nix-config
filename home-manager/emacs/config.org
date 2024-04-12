@@ -20,8 +20,6 @@
       how emacs decides it does not need to touch the file
       
 * TODO code evaluation in orgmode
-** haskell
-** python
 ** c++
 * TODO keys for orgmode
 * TODO haskell dev
@@ -444,7 +442,8 @@ short keybindings in limited contexts
        ;; other Babel languages
        (C . t)
        (python . t)
-       (plantuml . t)))
+       (plantuml . t)
+       (haskell . t)))
     )
 #+end_src
 
