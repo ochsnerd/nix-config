@@ -22,8 +22,6 @@
 * TODO code evaluation in orgmode
 ** c++
 * TODO keys for orgmode
-* TODO haskell dev
-* TODO org roam
 * TODO early-init.el
 * Other configs
 
@@ -368,7 +366,14 @@ short keybindings in limited contexts
 
       "SPC" 'projectile-command-map
 
-      "gg" 'magit))
+      "gg" 'magit
+
+      "cs" 'eglot
+      "cf" 'eglot-format-buffer
+      "cr" 'eglot-rename
+      "cm" 'imenu
+      "cd" 'eldoc
+      ))
 #+end_src
 
 *** Examples
@@ -410,6 +415,16 @@ short keybindings in limited contexts
 #+end_src
 
 * Programming
+
+** eglot
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :defer t
+    :hook
+    ((python-mode haskell-mode) . eglot-ensure))
+#+end_src
+
 ** nix
 
 #+begin_src emacs-lisp
@@ -417,6 +432,7 @@ short keybindings in limited contexts
     :mode
     ("\\.nix\\'"))
 #+end_src
+
 ** haskell
 
 #+begin_src emacs-lisp

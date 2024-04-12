@@ -19,7 +19,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     ./vim.nix
-    ./ghc.nix
+    ./haskell.nix
     ./python.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
