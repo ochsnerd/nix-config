@@ -16,17 +16,14 @@
     - the tangled file does not get touched after (timestamp), just a question of
       how emacs decides it does not need to touch the file
       
-* TODO take custom-file to here
-* TODO get rid of lock files and autosaves
-* TODO keys for orgmode
 * TODO code evaluation in orgmode
 ** haskell
 ** python
 ** c++
+* TODO keys for orgmode
 * TODO haskell dev
 * TODO org roam
 * TODO early-init.el
-
 * Other configs
 
 ** M-EMACS
@@ -43,7 +40,6 @@ TODO: Do we alwyas have to update package-archive-contents?
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")))
 
-  ;; (package-initialize)  ;; does emacs do this automatically now?
   (unless package-archive-contents
     (package-refresh-contents))
 #+end_src
@@ -190,6 +186,39 @@ Add keybindings to allow vim-like movement in completion lists.
 
 #+begin_src elisp
   (set-fringe-mode 10)
+#+end_src
+
+** Lock files
+
+Lock files are symlinks starting with ~.#~, preventing data loss if multiple
+users save the same file.
+
+#+begin_src elisp
+  (setq create-lockfiles nil)
+#+end_src
+
+** Autosave
+
+Auto-save to the currently visited file.
+
+#+begin_src elisp
+  (auto-save-visited-mode 1)
+#+end_src
+
+Write auto-save-files _also_ to ~/tmp~.
+
+#+begin_src elisp
+  (setq auto-save-file-name-transforms
+	`((".*" ,temporary-file-directory t)))
+#+end_src
+
+** Backup
+
+Write backups to ~/tmp~.
+
+#+begin_src elisp
+  (setq backup-directory-alist
+	`((".*" . ,temporary-file-directory)))
 #+end_src
 
 ** Visual bell
@@ -389,7 +418,8 @@ short keybindings in limited contexts
 #+end_src
 
 * org
-#+begin_src emacs-lisp
+
+#+begin_src elisp
   (use-package org
     :ensure nil
     :defer t
