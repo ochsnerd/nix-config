@@ -16,9 +16,9 @@
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
 
-    ./vim.nix
     ./git.nix
     ./bash.nix
+    ./haskell.nix
     (import ./emacs.nix { inherit config pkgs; })
   ];
 

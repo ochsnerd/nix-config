@@ -1,0 +1,5 @@
+{
+  # programs.ghc = {
+  #   enable = true;
+  # };
+}
