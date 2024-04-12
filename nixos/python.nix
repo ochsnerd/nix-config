@@ -5,5 +5,6 @@
     (python311.withPackages(ps: with ps; [
       black
     ]))
+    pkgs.nodePackages.pyright
   ];
 }
