@@ -3,15 +3,27 @@
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs-unstable;
+    package = (pkgs.emacsWithPackagesFromUsePackage {
+      package = pkgs.emacs-unstable;
+      config = ./emacs/config.org;
+      alwaysEnsure = false;
+      extraEmacsPackages = epkgs: [
+        epkgs.vterm
+        epkgs.use-package
+      ];
+    });
   };
+  # programs.emacs = {
+  #   enable = true;
+  #   package = pkgs.emacs-unstable;
+  # };
 
   home.file = {
-    ".emacs.el" = {
-      # TODO: Relative path of repo?
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix-config/home-manager/emacs.el";
+    ".config/emacs" = {
+      source = ./emacs;
+      recursive = true;
     };
   };
   # emacs daemon
-  services.emacs.package = pkgs.emacs-unstable;
+  # services.emacs.package = pkgs.emacs-unstable;
 }

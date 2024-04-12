@@ -1,0 +1,411 @@
+#+TITLE: Emacs Configuration
+#+PROPERTY: header-args :tangle config.el
+#+PROPERTY: header-args :results silent
+
+* How this works
+
+- this file is linked in ~../emacs.nix~ as config, and gets
+  scanned by nix for ~use-package~ macros. Nix then installs
+  the dependencies during rebuild (I think)
+- home-manager takes the files in this folder (as of now, ~config.org~ and ~init.el~)
+  and copies them write-only into the store, then symlinks them into ~~/.config/emacs~
+  - write-only forces me to update the files in the nix config and thus keeps it updated
+- on startup, emacs tangles codeblocks from here into ~config.el~, then loads the resulting file
+  - this means the tangled config is always up to date with the nix config
+  - probably pretty bad for startup time, depending on how the tangle works
+    - in theory only have to tangle once per rebuild
+    - the tangled file does not get touched after (timestamp), just a question of
+      how emacs decides it does not need to touch the file
+      
+* TODO take custom-file to here
+* TODO get rid of lock files and autosaves
+* TODO keys for orgmode
+* TODO code evaluation in orgmode
+** haskell
+** python
+** c++
+* TODO haskell dev
+* TODO org roam
+* TODO early-init.el
+
+* Other configs
+
+** M-EMACS
+
+https://github.com/MatthewZMD/.emacs.d
+
+* Package setup
+** package
+
+TODO: Do we alwyas have to update package-archive-contents?
+
+#+begin_src elisp
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			   ("org" . "https://orgmode.org/elpa/")))
+
+  ;; (package-initialize)  ;; does emacs do this automatically now?
+  (unless package-archive-contents
+    (package-refresh-contents))
+#+end_src
+
+** use-package
+
+#+begin_src elisp
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+end_src
+
+** custom variables
+
+Write custom variables into seperate file (so we don't touch init.el).
+
+#+begin_src elisp
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (when (file-exists-p custom-file)
+    (load custom-file))
+#+end_src
+
+* Completion
+** ivy
+
+Add keybindings to allow vim-like movement in completion lists.
+
+#+begin_src elisp
+  (use-package ivy
+    :diminish  ;; don't show in modeline
+    :bind
+    (("C-s" . swiper)
+     :map ivy-minibuffer-map
+     ("TAB" . ivy-alt-done)
+     ("C-l" . ivy-alt-done)
+     ("C-j" . ivy-next-line)
+     ("C-k" . ivy-previous-line)
+     :map ivy-switch-buffer-map
+     ("C-k" . ivy-previous-line)
+     ("C-l" . ivy-done)
+     ("C-d" . ivy-switch-buffer-kill)
+     :map ivy-reverse-i-search-map
+     ("C-k" . ivy-previous-line)
+     ("C-d" . ivy-switch-buffer-kill))
+    :init
+    (ivy-mode 1))
+
+  (use-package ivy-rich
+    :init
+    (ivy-rich-mode 1))
+#+end_src
+
+** counsel
+
+#+begin_src elisp
+  (use-package counsel
+    :bind
+    (("M-x" . counsel-M-x)
+     ("C-x b" . counsel-ibuffer)
+     ("C-x C-f" . counsel-find-file)
+     :map minibuffer-local-map
+     ("C-r" . 'counsel-minibuffer-history)))
+#+end_src
+
+** TODO company
+
+#+begin_src elisp :tangle no
+  (use-package company
+    :diminish company-mode
+    :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
+    :bind
+    (:map company-active-map
+	  ([tab] . smarter-tab-to-complete)
+	  ("TAB" . smarter-tab-to-complete))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-tooltip-align-annotations t)
+    (company-require-match 'never)
+    ;; Don't use company in the following modes
+    (company-global-modes '(not shell-mode eaf-mode))
+    ;; Trigger completion immediately.
+    (company-idle-delay 0.1)
+    ;; Number the candidates (use M-1, M-2 etc to select completions).
+    (company-show-numbers t)
+    :config
+    ;; (unless clangd-p (delete 'company-clang company-backends))
+    (global-company-mode 1)
+    (defun smarter-tab-to-complete ()
+      ;; "Try to `org-cycle', `yas-expand', and `yas-next-field' at current cursor position.
+      ;;  
+      ;;     If all failed, try to complete the common part with `company-complete-common'"
+      (interactive)
+      (when yas-minor-mode
+	(let ((old-point (point))
+	      (old-tick (buffer-chars-modified-tick))
+	      (func-list
+	       (if (equal major-mode 'org-mode) '(org-cycle yas-expand yas-next-field)
+		 '(yas-expand yas-next-field))))
+	  (catch 'func-suceed
+	    (dolist (func func-list)
+	      (ignore-errors (call-interactively func))
+	      (unless (and (eq old-point (point))
+			   (eq old-tick (buffer-chars-modified-tick)))
+		(throw 'func-suceed t)))
+	    (company-complete-common))))))
+#+end_src
+
+** TODO yasnippet
+
+#+begin_src elisp :tangle no
+  (use-package yasnippet
+    :diminish yas-minor-mode
+    :init
+    (use-package yasnippet-snippets :after yasnippet)
+    :hook
+    ((prog-mode LaTeX-mode org-mode markdown-mode) . yas-minor-mode)
+    :bind
+    (:map yas-minor-mode-map ("C-c C-n" . yas-expand-from-trigger-key))
+    (:map yas-keymap
+	  (("TAB" . smarter-yas-expand-next-field)
+	   ([(tab)] . smarter-yas-expand-next-field)))
+    :config
+    (yas-reload-all)
+    (defun smarter-yas-expand-next-field ()
+      ;;  "Try to `yas-expand' then `yas-next-field' at current cursor position."
+      (interactive)
+      (let ((old-point (point))
+	    (old-tick (buffer-chars-modified-tick)))
+	(yas-expand)
+	(when (and (eq old-point (point))
+		   (eq old-tick (buffer-chars-modified-tick)))
+	  (ignore-errors (yas-next-field))))))
+#+end_src
+
+* Visual changes
+** Correct defaults
+
+#+begin_src elisp
+  (setq inhibit-startup-message t)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (menu-bar-mode -1)
+#+end_src
+
+#+begin_src elisp
+  (set-fringe-mode 10)
+#+end_src
+
+** Visual bell
+
+#+begin_src elisp
+  (setq visible-bell t)
+#+end_src
+
+** Linenumbers
+#+begin_src elisp
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+  (dolist (mode '(org-mode-hook
+		  term-mode-hook
+		  shell-mode-hook
+		  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+** Font
+
+#+begin_src elisp
+  (set-face-attribute 'default nil :font "Fira Code" :height 120)
+#+end_src
+
+** Theme
+
+#+begin_src elisp
+  (use-package doom-themes
+    :config
+    (setq
+     doom-themes-enable-bold t
+     doom-themes-enable-italic t)
+    (load-theme 'doom-palenight t)
+    (doom-themes-visual-bell-config)
+    (doom-themes-org-config))
+#+end_src
+
+*** Cool themes
+
+#+begin_src elisp :tangle no
+  (load-theme 'doom-tomorrow-night t)
+#+end_src
+
+** Modeline
+
+#+begin_src elisp
+  (use-package all-the-icons)
+
+  (use-package doom-modeline
+    :config
+    (doom-modeline-mode 1))
+#+end_src
+
+** Rainbow delimiter
+
+#+begin_src elisp
+  (use-package rainbow-delimiters
+    :hook
+    (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+* Ergonomics
+** which-key
+
+#+begin_src elisp
+  (use-package which-key
+    :diminish
+    :init
+    (which-key-mode)
+    :config
+    (setq which-key-idle-delay 0.3))
+#+end_src
+
+** helpful
+
+#+begin_src elisp
+  (use-package helpful
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key] . helpful-key))
+#+end_src
+
+* Keybindings
+** evil
+
+#+begin_src elisp
+  ;; escape to escape
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
+
+TODO: rune/evil-hook?
+
+#+begin_src elisp
+  (use-package evil
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    ;; :hook
+    ;; (evil-mode . rune/evil-hook)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+    ;; Use viual line motions outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
+
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
+#+end_src
+
+** TODO hydra
+
+short keybindings in limited contexts
+
+** general
+
+#+begin_src emacs-lisp
+  (use-package general
+    :config
+    (general-create-definer spc-leader
+      :states '(normal visual insert emacs)
+      :keymaps 'override
+      :prefix "SPC"
+      :non-normal-prefix "C-SPC")
+    (spc-leader
+      "w" 'evil-window-map
+      "h" 'help-command
+
+      "." 'counsel-find-file
+      "," 'counsel-ibuffer
+
+      "SPC" 'projectile-command-map
+
+      "gg" 'magit))
+#+end_src
+
+*** Examples
+
+- https://github.com/tshu-w/.emacs.d/blob/master/lisp/core-keybinds.el
+- https://github.com/skyler544/rex/blob/main/config/rex-keybinds.el
+
+* Projects
+** projectile
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :diminish projectile-mode
+    :config
+    (projectile-mode)
+    :custom
+    ((projectile-completion-system 'ivy))
+    :init
+    ;; (when (file-directory-p "~/root-for-all-code")
+    ;;   (setq projectile-project-search-path '("~/root-for-all-code")))
+    (setq projectile-switch-project-action #'projectile-dired))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package counsel-projectile
+    :config
+    (counsel-projectile-mode))
+#+end_src
+
+* Version control
+** magit
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :commands
+    (magit-status magit-get-current-branch)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+end_src
+
+* Programming
+** nix
+
+#+begin_src emacs-lisp
+  (use-package nix-mode
+    :mode
+    ("\\.nix\\'"))
+#+end_src
+
+* org
+#+begin_src emacs-lisp
+  (use-package org
+    :ensure nil
+    :defer t
+    :custom
+    (org-confirm-babel-evaluate 'nil)
+    (org-todo-keywords
+     '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE" "CANCELED")))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '(
+       ;; other Babel languages
+       (C . t)
+       (python . t)
+       (plantuml . t)))
+    )
+  #+end_src
+  
