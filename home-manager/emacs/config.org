@@ -368,6 +368,7 @@ short keybindings in limited contexts
 
       "gg" 'magit
 
+      "cc" 'compile
       "cs" 'eglot
       "cf" 'eglot-format-buffer
       "cr" 'eglot-rename

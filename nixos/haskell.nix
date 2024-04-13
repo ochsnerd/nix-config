@@ -1,4 +1,13 @@
 { pkgs, ... }:
+
+let
+  myHaskellEnv = pkgs.haskellPackages.ghcWithPackages (ghcPkgs: with ghcPkgs; [
+    random
+  ]);
+in
 {
-  environment.systemPackages = with pkgs; [ ghc haskell-language-server ];
+    environment.systemPackages = with pkgs; [
+      myHaskellEnv
+      haskell-language-server
+  ];
 }
