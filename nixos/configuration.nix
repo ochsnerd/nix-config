@@ -82,6 +82,8 @@
     auto-optimise-store = true;
   };
 
+  environment.systemPackages = with pkgs; [ graphviz ];  # dot
+
   # TODO: Check how this looks when not running in vm
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";

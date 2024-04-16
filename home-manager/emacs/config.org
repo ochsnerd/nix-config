@@ -374,6 +374,9 @@ short keybindings in limited contexts
       "cr" 'eglot-rename
       "cm" 'imenu
       "cd" 'eldoc
+
+      "nrf" 'org-roam-node-find
+      "nri" 'org-roam-node-insert
       ))
 #+end_src
 
@@ -484,4 +487,15 @@ short keybindings in limited contexts
   (use-package org-modern
     :hook
     ((org-mode org-agenda-finalize-mode) . org-modern-mode))
+#+end_src
+
+** org-roam
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :custom
+    (org-roam-directory (file-truename "~/org/roam"))
+    :config
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode))
 #+end_src
