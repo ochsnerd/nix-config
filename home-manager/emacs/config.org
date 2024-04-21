@@ -386,7 +386,8 @@ short keybindings in limited contexts
       "cf" 'eglot-format-buffer
       "cr" 'eglot-rename
       "cm" 'imenu
-      "cd" 'eldoc
+      "cd" 'xref-find-definitions
+      "cD" 'xref-find-references
 
       "nrf" 'org-roam-node-find
       "nri" 'org-roam-node-insert
