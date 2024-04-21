@@ -488,7 +488,9 @@ short keybindings in limited contexts
 #+begin_src emacs-lisp
   (use-package haskell-mode
     :mode
-    ("\\.hs\\'"))
+    ("\\.hs\\'")
+    :bind
+    (:map haskell-mode-map ("C-c C-c" . haskell-interactive-switch)))
 #+end_src
 
 * org
