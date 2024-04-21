@@ -311,6 +311,18 @@ From doom-emacs
             ("DEPRECATED" font-lock-doc-face bold))))
 #+end_src
 
+
+** pretty-mode
+
+- did not get it to work reliably
+- resulting symbols are not monospace, stuff doesn't align anymore
+
+#+begin_src emacs-lisp :tangle no
+  (use-package pretty-mode
+    :config
+    (global-pretty-mode 1))
+#+end_src
+
 * Ergonomics
 ** which-key
 
