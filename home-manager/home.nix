@@ -18,7 +18,6 @@
 
     ./git.nix
     ./bash.nix
-    ./haskell.nix
     (import ./emacs.nix { inherit config pkgs; })
   ];
 

@@ -2,7 +2,7 @@
 
 let
   myHaskellEnv = pkgs.haskellPackages.ghcWithPackages (ghcPkgs: with ghcPkgs; [
-    random
+    # random
   ]);
 in
 {
