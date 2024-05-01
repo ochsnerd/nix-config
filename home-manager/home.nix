@@ -18,6 +18,7 @@
 
     ./git.nix
     ./bash.nix
+    ./firefix.nix
     (import ./emacs.nix { inherit config pkgs; })
   ];
 
