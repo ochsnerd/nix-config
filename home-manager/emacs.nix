@@ -1,5 +1,5 @@
 # see https://github.com/bbigras/nix-config/blob/731ddebeeef5043d98efc7994860aac9b22a8d5d/users/bbigras/dev/emacs.nix 
-{ config, pkgs }:
+{ pkgs }:
 {
   programs.emacs = {
     enable = true;
@@ -22,5 +22,5 @@
     };
   };
   # emacs daemon
-  services.emacs.package = pkgs.emacs-unstable;
+  # services.emacs.package = pkgs.emacs-unstable;
 }

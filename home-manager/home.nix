@@ -20,7 +20,7 @@
     ./bash.nix
     ./firefix.nix
     (import ./vscode.nix { inherit pkgs; })
-    (import ./emacs.nix { inherit config pkgs; })
+    (import ./emacs.nix { inherit pkgs; })
   ];
 
   nixpkgs = {
