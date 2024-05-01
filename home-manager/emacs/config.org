@@ -464,6 +464,14 @@ short keybindings in limited contexts
 
 * Programming
 
+** direnv
+
+#+begin_src emacs-lisp
+(use-package direnv
+ :config
+ (direnv-mode))
+#+end_src
+
 ** eglot
 
 #+begin_src emacs-lisp

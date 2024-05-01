@@ -21,6 +21,7 @@
     ./vim.nix
     ./haskell.nix
     ./python.nix
+    ./direnv.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -82,7 +83,9 @@
     auto-optimise-store = true;
   };
 
-  environment.systemPackages = with pkgs; [ graphviz ];  # dot
+  environment.systemPackages = with pkgs; [
+    graphviz
+  ];
 
   # TODO: Check how this looks when not running in vm
   boot.loader.grub.enable = true;
