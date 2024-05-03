@@ -85,6 +85,7 @@
 
   environment.systemPackages = with pkgs; [
     graphviz
+    st
   ];
 
   # TODO: Check how this looks when not running in vm
