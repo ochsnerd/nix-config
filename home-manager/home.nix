@@ -19,6 +19,7 @@
     ./git.nix
     ./bash.nix
     ./firefix.nix
+    ./desktop.nix
     (import ./vscode.nix { inherit pkgs; })
     (import ./emacs.nix { inherit pkgs; })
   ];
