@@ -501,7 +501,7 @@ from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
 #+begin_src emacs-lisp
   (use-package direnv
     :config
-   (direnv-mode))
+    (direnv-mode))
 #+end_src
 
 ** eglot
@@ -513,6 +513,21 @@ from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
     (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
     :hook
     ((python-ts-mode haskell-mode csharp-mode) . eglot-ensure))
+#+end_src
+
+** flycheck
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :init (global-flycheck-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package flycheck-eglot
+    :ensure t
+    :after (flycheck eglot)
+    :config
+    (global-flycheck-eglot-mode 1))
 #+end_src
 
 ** web
