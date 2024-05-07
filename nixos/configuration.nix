@@ -87,6 +87,7 @@
     graphviz
     st
     htop
+    gcc13
   ];
 
   # TODO: Check how this looks when not running in vm
