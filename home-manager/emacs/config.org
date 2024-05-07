@@ -477,9 +477,39 @@ short keybindings in limited contexts
 #+begin_src emacs-lisp
   (use-package eglot
     :defer t
+    :config
+    (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
     :hook
-    ((python-mode haskell-mode) . eglot-ensure))
+    ((python-mode haskell-mode csharp-mode) . eglot-ensure))
 #+end_src
+
+** C#
+
+#+begin_src emacs-lisp
+    (use-package csharp-mode
+      :ensure t)
+#+end_src
+
+*** lsp
+Make sure that omnisharp is installed, e.g. default.nix:
+
+#+begin_src nix :tangle no
+{ pkgs ? import <nixpkgs> {}}:
+
+pkgs.mkShell {
+  packages = with pkgs; [
+    dotnetCorePackages.sdk_8_0
+    omnisharp-roslyn
+  ];
+}
+#+end_src
+
+and that eglot knows about it, e.g.
+
+#+begin_src emacs-lisp :tangle no
+   (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
+#+end_src
+
 
 ** python
 
