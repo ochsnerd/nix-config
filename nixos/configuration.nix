@@ -85,7 +85,6 @@
 
   environment.systemPackages = with pkgs; [
     graphviz
-    st
     htop
     gcc13
   ];
