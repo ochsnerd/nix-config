@@ -543,6 +543,24 @@ from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
     (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
     (multi-web-global-mode 1))
 #+end_src
+
+** typescript
+
+TODO: github.com/AdamNiederer/ng2-mode
+
+#+begin_src emacs-lisp
+  (use-package typescript-mode)
+
+  (use-package tide
+  :after (company flycheck direnv editorconfig)
+  :hook
+  ((typescript-ts-mode . tide-setup)
+   (tsx-ts-mode . tide-setup)
+   ;; tide seems to only honor tsfmt.json. See also github.com/ananthakumaran/tide/issues/96
+   (before-save . tide-format-before-save)
+   (typescript-ts-mode . tide-hl-identifier-mode)))
+#+end_src
+
 ** C#
 
 #+begin_src emacs-lisp
