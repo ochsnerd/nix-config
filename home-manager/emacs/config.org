@@ -467,9 +467,9 @@ short keybindings in limited contexts
 ** direnv
 
 #+begin_src emacs-lisp
-(use-package direnv
- :config
- (direnv-mode))
+  (use-package direnv
+    :config
+   (direnv-mode))
 #+end_src
 
 ** eglot
@@ -483,11 +483,24 @@ short keybindings in limited contexts
     ((python-mode haskell-mode csharp-mode) . eglot-ensure))
 #+end_src
 
+** web
+
+#+begin_src emacs-lisp
+  (use-package multi-web-mode
+    :config
+    (setq mweb-default-major-mode 'html-mode)
+    (setq mweb-tags
+	  '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+	    (js-mode  "<script[^>]*>" "</script>")
+	    (css-mode "<style[^>]*>" "</style>")))
+    (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+    (multi-web-global-mode 1))
+#+end_src
 ** C#
 
 #+begin_src emacs-lisp
-    (use-package csharp-mode
-      :ensure t)
+  (use-package csharp-mode
+    :ensure t)
 #+end_src
 
 *** lsp
