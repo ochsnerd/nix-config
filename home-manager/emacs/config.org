@@ -246,6 +246,7 @@ the reason for it is.
   (column-number-mode)
   (global-display-line-numbers-mode t)
   (dolist (mode '(org-mode-hook
+		  vterm-mode-hook
 		  term-mode-hook
 		  shell-mode-hook
 		  eshell-mode-hook))
