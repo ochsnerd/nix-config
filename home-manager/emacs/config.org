@@ -422,6 +422,7 @@ short keybindings in limited contexts
       "cd" 'xref-find-definitions
       "cD" 'xref-find-references
 
+      "ni"  'org-insert-structure-template
       "nrf" 'org-roam-node-find
       "nri" 'org-roam-node-insert
       ))
