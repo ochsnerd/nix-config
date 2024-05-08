@@ -25,6 +25,8 @@
 * TODO early-init.el
 * Other configs
 
+https://github.com/winny-/emacs.d
+
 ** M-EMACS
 
 https://github.com/MatthewZMD/.emacs.d
@@ -524,7 +526,6 @@ from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
 
 #+begin_src emacs-lisp
   (use-package flycheck-eglot
-    :ensure t
     :after (flycheck eglot)
     :config
     (global-flycheck-eglot-mode 1))
@@ -563,9 +564,10 @@ TODO: github.com/AdamNiederer/ng2-mode
 
 ** C#
 
+TODO: check out these https://github.com/winny-/emacs.d/blob/master/configuration.org#c-net-support
+
 #+begin_src emacs-lisp
-  (use-package csharp-mode
-    :ensure t)
+  (use-package csharp-mode)
 #+end_src
 
 *** lsp
@@ -623,6 +625,9 @@ and that eglot knows about it, e.g.
 #+end_src
 
 * org
+
+blocks: ~<sTAB~ does not work anymore, restore it by ~(require 'org-tempo)~.
+The function is ~org-insert-structure-template~.
 
 #+begin_src emacs-lisp
   (use-package org
