@@ -508,6 +508,14 @@ from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
     (direnv-mode))
 #+end_src
 
+** editorconfig
+
+#+begin_src emacs-lisp
+  (use-package editorconfig
+    :config
+    (editorconfig-mode 1))
+#+end_src
+
 ** eglot
 
 #+begin_src emacs-lisp
