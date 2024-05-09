@@ -39,10 +39,11 @@ TODO: Do we alwyas have to update package-archive-contents?
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("org" . "https://orgmode.org/elpa/")))
+			   ("org" . "https://orgmode.org/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")))
 
-  ;; (unless package-archive-contents
-  ;;   (package-refresh-contents))
+  (unless package-archive-contents
+    (package-refresh-contents))
 #+end_src
 
 ** use-package
@@ -130,6 +131,7 @@ Add keybindings to allow vim-like movement in completion lists.
     (ivy-mode 1))
 
   (use-package ivy-rich
+    :after counsel
     :init
     (ivy-rich-mode 1))
 #+end_src
