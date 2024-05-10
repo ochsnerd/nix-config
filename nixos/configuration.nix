@@ -22,6 +22,7 @@
     ./haskell.nix
     ./python.nix
     ./direnv.nix
+    ./kanata.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -103,10 +104,8 @@
   time.timeZone = "Europe/Zurich";
 
   services.xserver.enable = true;
-
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-
   services.xserver = {
     layout = "us";
     xkbVariant = "";
