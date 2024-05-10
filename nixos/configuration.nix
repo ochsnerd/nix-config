@@ -89,13 +89,7 @@
     gcc13
   ];
 
-  # TODO: Check how this looks when not running in vm
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
-
-  virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.guest.x11 = true;
+  boot.loader.systemd-boot.enable = true;
 
   fonts.packages = with pkgs; [
     fira-code
