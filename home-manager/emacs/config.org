@@ -21,7 +21,6 @@
       
 * TODO code evaluation in orgmode
 ** c++
-* TODO keys for orgmode
 * TODO early-init.el
 * Other configs
 
@@ -42,8 +41,8 @@ TODO: Do we alwyas have to update package-archive-contents?
 			   ("org" . "https://orgmode.org/elpa/")
                            ("gnu" . "http://elpa.gnu.org/packages/")))
 
-  (unless package-archive-contents
-    (package-refresh-contents))
+  ;; (unless package-archive-contents
+  ;;   (package-refresh-contents))
 #+end_src
 
 ** use-package
