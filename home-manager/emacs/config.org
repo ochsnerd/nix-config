@@ -52,6 +52,10 @@ TODO: Do we alwyas have to update package-archive-contents?
   (setq use-package-always-ensure t)
 #+end_src
 
+** quelpa
+#+begin_src emacs-lisp
+ (use-package quelpa-use-package)
+#+end_src
 
 * Behaviour
 
@@ -192,6 +196,18 @@ the reason for it is.
     ;; 	      (throw 'func-suceed t)))
     ;; 	  (company-complete-common))))))
 )
+#+end_src
+
+** copilot
+
+#+begin_src emacs-lisp
+  (use-package copilot
+    :quelpa (copilot :fetcher github
+		     :repo "copilot-emacs/copilot.el"
+		     :branch "main"
+		     :files ("*.el"))
+    :config
+    (setq copilot-idle-delay nil))
 #+end_src
 
 ** TODO yasnippet
@@ -428,7 +444,11 @@ short keybindings in limited contexts
       "nrf" 'org-roam-node-find
       "nri" 'org-roam-node-insert
       "nrt" 'org-roam-tag-add
-      ))
+
+      "pp" 'copilot-mode
+      "pc" 'copilot-complete
+      "pn" 'copilot-next-completion
+      "pa" 'copilot-accept-completion))
 #+end_src
 
 *** Examples
