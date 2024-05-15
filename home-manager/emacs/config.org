@@ -426,6 +426,7 @@ short keybindings in limited contexts
       "ni"  'org-insert-structure-template
       "nrf" 'org-roam-node-find
       "nri" 'org-roam-node-insert
+      "nrt" 'org-roam-tag-add
       ))
 #+end_src
 
