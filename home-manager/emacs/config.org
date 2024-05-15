@@ -414,6 +414,7 @@ short keybindings in limited contexts
       "SPC" 'projectile-command-map
 
       "gg" 'magit
+      "gb" 'magit-blame
 
       "cc" 'compile
       "cs" 'eglot
@@ -576,13 +577,8 @@ TODO: github.com/AdamNiederer/ng2-mode
 
 ** C#
 
-TODO: check out these https://github.com/winny-/emacs.d/blob/master/configuration.org#c-net-support
+*** lsp: omnisharp
 
-#+begin_src emacs-lisp
-  (use-package csharp-mode)
-#+end_src
-
-*** lsp
 Make sure that omnisharp is installed, e.g. default.nix:
 
 #+begin_src nix :tangle no
@@ -602,6 +598,7 @@ and that eglot knows about it, e.g.
    (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
 #+end_src
 
+omnisharp configuration: https://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options
 
 ** python
 
