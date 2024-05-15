@@ -4,7 +4,7 @@
     userName = "David Ochsner";
     extraConfig = {
       core = {
-        autocrlf = true;
+        autocrlf = false;
       };
       rerere = {
         enabled = true;
