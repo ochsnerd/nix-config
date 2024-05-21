@@ -90,6 +90,9 @@
     gcc13
   ];
 
+  virtualisation.libvirtd.enable = true;
+  boot.kernelModules = ["kvm-amd" "kvm-intel"];
+
   boot.loader.systemd-boot.enable = true;
 
   fonts.packages = with pkgs; [
@@ -122,8 +125,7 @@
       openssh.authorizedKeys.keys = [
         # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       ];
-      # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
-      extraGroups = ["wheel" "networkmanager"];
+      extraGroups = ["wheel" "networkmanager" "libvirtd"];
     };
   };
 
