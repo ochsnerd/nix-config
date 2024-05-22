@@ -151,6 +151,16 @@ Add keybindings to allow vim-like movement in completion lists.
      ("C-r" . 'counsel-minibuffer-history)))
 #+end_src
 
+** orderless
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+
 ** company
 
 ~smarter-tab-to-complete~ is from some other config, not sure what
