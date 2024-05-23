@@ -71,17 +71,6 @@ in
             # add preferences for profile_1 here...
           };
         };
-        man= {
-          id = 2;
-          name = "MAN";
-          isDefault = false;
-          settings = {
-            "browser.newtabpage.activity-stream.feeds.section.highlights" = true;
-            "browser.startup.homepage" = "https://mail.google.com";
-            # add preferences for profile_1 here...
-          };
-        };
-      # add profiles here...
       };
     };
   };
