@@ -89,6 +89,7 @@
     htop
     gcc13
     ferdium
+    spotify
   ];
 
   virtualisation.libvirtd.enable = true;
