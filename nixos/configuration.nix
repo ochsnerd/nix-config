@@ -88,6 +88,7 @@
     graphviz
     htop
     gcc13
+    ferdium
   ];
 
   virtualisation.libvirtd.enable = true;
