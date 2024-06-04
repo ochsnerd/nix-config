@@ -90,6 +90,7 @@
     gcc13
     ferdium
     spotify
+    umlet
   ];
 
   virtualisation.libvirtd.enable = true;
