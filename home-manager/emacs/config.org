@@ -294,8 +294,8 @@ the reason for it is.
     (setq
      doom-themes-enable-bold t
      doom-themes-enable-italic t)
-    (load-theme 'doom-palenight t)
     (doom-themes-visual-bell-config)
+    (load-theme 'doom-solarized-light t)
     (doom-themes-org-config))
 #+end_src
 
@@ -303,6 +303,7 @@ the reason for it is.
 
 #+begin_src emacs-lisp :tangle no
   (load-theme 'doom-tomorrow-night t)
+  (load-theme 'doom-palenight t)
 #+end_src
 
 ** Modeline
