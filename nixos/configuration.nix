@@ -23,6 +23,7 @@
     ./python.nix
     ./direnv.nix
     ./kanata.nix
+    ./tex.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
