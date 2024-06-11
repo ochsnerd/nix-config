@@ -88,6 +88,7 @@
     graphviz
     htop
     gcc13
+    nix-index
     ferdium
     spotify
     umlet
