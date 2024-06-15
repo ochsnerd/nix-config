@@ -95,6 +95,8 @@
     umlet
   ];
 
+  programs.steam.enable = true;
+
   virtualisation.libvirtd.enable = true;
   boot.kernelModules = ["kvm-amd" "kvm-intel"];
 
