@@ -22,7 +22,7 @@ in
 
           /* ---- EXTENSIONS ---- */
           ExtensionSettings = {
-            "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
+            # "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
             # uBlock Origin:
             "uBlock0@raymondhill.net" = {
               install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
@@ -61,9 +61,9 @@ in
             # add preferences for profile_0 here...
           };
         };
-        mf = {
+        cudos = {
           id = 1;
-          name = "M&F";
+          name = "cudos";
           isDefault = false;
           settings = {
             "browser.newtabpage.activity-stream.feeds.section.highlights" = true;
