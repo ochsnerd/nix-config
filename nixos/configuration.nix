@@ -95,6 +95,11 @@
     umlet
   ];
 
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
   programs.steam.enable = true;
 
   virtualisation.libvirtd.enable = true;
