@@ -93,6 +93,7 @@
     ferdium
     spotify
     umlet
+    volctl # TODO: Does it work after restart?
   ];
 
   virtualisation.docker.rootless = {
