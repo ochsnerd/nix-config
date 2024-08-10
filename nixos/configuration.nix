@@ -93,6 +93,7 @@
     ferdium
     spotify
     umlet
+    protonvpn-gui
   ];
 
   virtualisation.docker.rootless = {
