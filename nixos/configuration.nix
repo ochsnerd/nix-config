@@ -92,8 +92,8 @@
     nix-index
     ferdium
     spotify
-    umlet
     protonvpn-gui
+    comma
   ];
 
   virtualisation.docker.rootless = {
