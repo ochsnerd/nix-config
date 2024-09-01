@@ -18,12 +18,10 @@ in
       package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
         extraPolicies = {
           DisableTelemetry = true;
-          # add policies here...
 
           /* ---- EXTENSIONS ---- */
           ExtensionSettings = {
             # "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
-            # uBlock Origin:
             "uBlock0@raymondhill.net" = {
               install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
               installation_mode = "force_installed";
@@ -37,13 +35,11 @@ in
             "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
             "extensions.pocket.enabled" = lock-false;
             "extensions.screenshots.disabled" = lock-true;
-            # add global preferences here...
           };
         };
       };
 
       /* ---- PROFILES ---- */
-      # Switch profiles via about:profiles page.
       # For options that are available in Home-Manager see
       # https://nix-community.github.io/home-manager/options.html#opt-programs.firefox.profiles
       profiles ={
@@ -69,6 +65,15 @@ in
             "browser.newtabpage.activity-stream.feeds.section.highlights" = true;
             "browser.startup.homepage" = "https://mail.google.com";
             # add preferences for profile_1 here...
+          };
+        };
+        youtube = {
+          id = 2;
+          name = "youtube";
+          isDefault = false;
+          settings = {
+            "browser.newtabpage.activity-stream.feeds.section.highlights" = true;
+            "browser.startup.homepage" = "https://google.com";
           };
         };
       };
