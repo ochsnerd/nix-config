@@ -646,6 +646,13 @@ omnisharp configuration: https://github.com/OmniSharp/omnisharp-roslyn/wiki/Conf
     (python-ts-mode . blacken-mode))
 #+end_src
 
+** elm
+
+#+begin_src emacs-lisp
+  (use-package elm-mode)
+#+end_src
+
+
 ** nix
 
 #+begin_src emacs-lisp
