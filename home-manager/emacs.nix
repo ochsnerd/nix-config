@@ -8,7 +8,6 @@
       config = ./emacs/config.org;
       alwaysEnsure = false;
       extraEmacsPackages = epkgs: [
-        epkgs.emacsql-sqlite
         epkgs.vterm
         epkgs.use-package
       ];
