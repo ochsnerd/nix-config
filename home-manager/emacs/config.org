@@ -690,6 +690,7 @@ The function is ~org-insert-structure-template~.
      '(
        ;; other Babel languages
        (C . t)
+       (dot . t)
        (python . t)
        (plantuml . t)
        (haskell . t)))
