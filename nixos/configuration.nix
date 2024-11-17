@@ -94,6 +94,7 @@
     spotify
     protonvpn-gui
     comma
+    gnome.gnome-boxes
   ];
 
   virtualisation.docker.rootless = {
