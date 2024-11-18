@@ -210,13 +210,12 @@ the reason for it is.
 
 ** copilot
 
+Installed via emacs.nix to handle node dependency.
+
 #+begin_src emacs-lisp
-  (use-package copilot
-    :quelpa (copilot :fetcher github
-		     :repo "copilot-emacs/copilot.el"
-		     :branch "main"
-		     :files ("*.el"))
+(use-package copilot
     :config
+    ;; nil means no idle-based autocompletion
     (setq copilot-idle-delay nil))
 #+end_src
 

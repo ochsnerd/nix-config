@@ -10,6 +10,7 @@
       extraEmacsPackages = epkgs: [
         epkgs.vterm
         epkgs.use-package
+        epkgs.copilot
       ];
     });
   };
