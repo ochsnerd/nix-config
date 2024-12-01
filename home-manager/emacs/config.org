@@ -294,7 +294,7 @@ Installed via emacs.nix to handle node dependency.
      doom-themes-enable-bold t
      doom-themes-enable-italic t)
     (doom-themes-visual-bell-config)
-    (load-theme 'doom-solarized-light t)
+    (load-theme 'doom-gruvbox t)
     (doom-themes-org-config))
 #+end_src
 
@@ -303,9 +303,12 @@ Installed via emacs.nix to handle node dependency.
 #+begin_src emacs-lisp :tangle no
   (load-theme 'doom-tomorrow-night t)
   (load-theme 'doom-palenight t)
+  (load-theme 'doom-solarized-light t)
 #+end_src
 
 ** Modeline
+
+Make sure to run ~M-x nerd-icons-install-fonts~ and ~M-x all-the-icons-install-fonts~.
 
 #+begin_src emacs-lisp
   (use-package all-the-icons)
