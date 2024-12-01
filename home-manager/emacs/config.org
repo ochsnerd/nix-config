@@ -210,7 +210,7 @@ the reason for it is.
 
 ** copilot
 
-Installed via emacs.nix to handle node dependency.
+Installed via emacs.nix to handle node dependency. // TODO: Does not work
 
 #+begin_src emacs-lisp
 (use-package copilot
@@ -640,6 +640,8 @@ omnisharp configuration: https://github.com/OmniSharp/omnisharp-roslyn/wiki/Conf
     :config
     (setq python-ident-guess-offset-verbos nil))
 #+end_src
+
+This guy keeps formatting my file while I'm editing
 
 #+begin_src emacs-lisp
   (use-package blacken
