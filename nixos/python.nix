@@ -6,6 +6,6 @@
       black
       pygments # syntax highlighting for orgmode latex export
     ]))
-    pkgs.nodePackages.pyright
+    pkgs.pyright
   ];
 }

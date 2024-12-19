@@ -94,7 +94,7 @@
     spotify
     protonvpn-gui
     comma
-    gnome.gnome-boxes
+    gnome-boxes
   ];
 
   virtualisation.docker.rootless = {
@@ -128,9 +128,8 @@
     xkb.variant = "";
   };
 
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
   security.rtkit.enable = true;
+  # check https://nixos.wiki/wiki/PipeWire
 
   users.users = {
     david = {
@@ -156,5 +155,5 @@
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 }
