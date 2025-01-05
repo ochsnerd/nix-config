@@ -1,10 +1,17 @@
 # My nixos config
 
+Build by
+
+```bash
+sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#laptop
+sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#pc
+```
+
 ## Setup
 
-1. Get this repo somewhere on a nixos machine
-2. Add `git` to `/etc/nixos/configuration.nix`, `sudo nixos-rebuild switch`
-3. Copy hardware configuration from `/etc/nixos/hardware-configuration.nix` into `nixos`
-4. `git config user.email "davidochsner93@gmail.com" && git add nixos/hardware-configuration.nix && git commit -m"New hardware config"`.
-5. `export NIX_CONFIG="experimental-features = nix-command flakes" && nix flake update && sudo nixos-rebuild switch --flake <path to repo-root>`  <- maybe `--flake .#<hostname>`?
-6. (update command in home-manager/bash.nix)
+1. `nix-shell -p git vim`
+2. git clone this
+3. Copy hardware configuration from `/etc/nixos/hardware-configuration.nix` into `nixos`, call it something
+4. Add a new config to `flake.nix:nixosConfigurations`
+5. `git commit` for nix to pick up the new file
+5. `export NIX_CONFIG="experimental-features = nix-command flakes" && nix flake update && sudo nixos-rebuild switch --flake <path to repo-root>#new-name`

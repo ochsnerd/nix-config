@@ -61,11 +61,18 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      david = nixpkgs.lib.nixosSystem {
+      pc = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
-          # > Our main nixos configuration file <
           ./nixos/configuration.nix
+          ./nixos/hardware-configuration-pc.nix
+        ];
+      };
+      laptop = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          ./nixos/configuration.nix
+          ./nixos/hardware-configuration-thinkpad.nix
         ];
       };
     };
