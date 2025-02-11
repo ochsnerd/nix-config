@@ -92,6 +92,7 @@
     protonvpn-gui
     comma
     gnome-boxes
+    gnomeExtensions.tophat
   ];
 
   virtualisation.docker.rootless = {
