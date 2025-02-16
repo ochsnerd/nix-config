@@ -66,6 +66,7 @@
         modules = [
           ./nixos/configuration.nix
           ./nixos/hardware-configuration-pc.nix
+          ./nixos/pc.nix
         ];
       };
       laptop = nixpkgs.lib.nixosSystem {
