@@ -101,6 +101,14 @@
 
   programs.steam.enable = true;
 
+  # This does not work properly (window thinks its a terminal)
+  # see eg. https://stackoverflow.com/q/78297898
+  # dont forget to add the overlay here as well: (import inputs.emacs-overlay)
+  # services.emacs = {
+  #   enable = true;
+  #   package = pkgs.emacs-git;
+  # };
+
   virtualisation.libvirtd.enable = true;
   boot.kernelModules = ["kvm-amd" "kvm-intel"];
 

@@ -4,7 +4,7 @@
   programs.emacs = {
     enable = true;
     package = (pkgs.emacsWithPackagesFromUsePackage {
-      package = pkgs.emacs-unstable;
+      package = pkgs.emacs-git;
       config = ./emacs/config.org;
       alwaysEnsure = false;
       extraEmacsPackages = epkgs: [

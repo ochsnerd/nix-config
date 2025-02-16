@@ -113,7 +113,7 @@ Write backups to ~/tmp~.
 
 Add keybindings to allow vim-like movement in completion lists.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package ivy
     :diminish  ;; don't show in modeline
     :bind
