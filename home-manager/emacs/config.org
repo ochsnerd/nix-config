@@ -679,6 +679,12 @@ This guy keeps formatting my file while I'm editing
     (:map haskell-mode-map ("C-c C-c" . haskell-interactive-switch)))
 #+end_src
 
+Need markdown-mode to properly display types in the echo area.
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode)
+#+end_src
+
 * org
 
 blocks: ~<sTAB~ does not work anymore, restore it by ~(require 'org-tempo)~.
