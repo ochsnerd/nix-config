@@ -212,11 +212,25 @@ the reason for it is.
 
 Installed via emacs.nix to handle node dependency. // TODO: Does not work
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package copilot
     :config
     ;; nil means no idle-based autocompletion
     (setq copilot-idle-delay nil))
+#+end_src
+
+** gptel
+
+See capabilities https://github.com/karthink/gptel.
+
+#+begin_src emacs-lisp
+(use-package gptel)
+#+end_src
+
+Setup backend: put api key here, execute the statement (see also `~/anthropic-key`)
+
+#+begin_src emacs-lisp tangle: no
+(gptel-make-anthropic "Claude" :stream t :key "<anthropic key here>")
 #+end_src
 
 ** TODO yasnippet
@@ -458,10 +472,9 @@ short keybindings in limited contexts
       "nri" 'org-roam-node-insert
       "nrt" 'org-roam-tag-add
 
-      "pp" 'copilot-mode
-      "pc" 'copilot-complete
-      "pn" 'copilot-next-completion
-      "pa" 'copilot-accept-completion))
+      "pp" 'gptel-send
+      "pm" 'gptel-menu
+      ))
 #+end_src
 
 *** Examples
