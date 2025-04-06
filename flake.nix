@@ -76,6 +76,13 @@
           ./nixos/hardware-configuration-thinkpad.nix
         ];
       };
+      framework = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          ./nixos/configuration.nix
+          ./nixos/hardware-configuration-framework.nix
+        ];
+      };
     };
 
     # Standalone home-manager configuration entrypoint
