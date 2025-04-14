@@ -90,6 +90,7 @@
     spotify
     protonvpn-gui
     comma
+    bitwarden-desktop
     gnome-boxes
     gnomeExtensions.tophat
   ];
