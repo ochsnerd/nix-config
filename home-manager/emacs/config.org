@@ -30,6 +30,11 @@ https://github.com/winny-/emacs.d
 
 https://github.com/MatthewZMD/.emacs.d
 
+* Preamble
+#+begin_src emacs-lisp
+;;; ...  -*- lexical-binding: t -*-
+#+end_src
+
 * Package setup
 ** TODO package
 
@@ -592,7 +597,7 @@ from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
 
 ** web
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package multi-web-mode
     :config
     (setq mweb-default-major-mode 'html-mode)
@@ -715,10 +720,7 @@ The function is ~org-insert-structure-template~.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '(
-       ;; other Babel languages
        (C . t)
-       (csharp . t)
-       (rust . t)
        (dot . t)
        (python . t)
        (plantuml . t)
