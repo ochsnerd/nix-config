@@ -755,3 +755,10 @@ Code-Highlighting in for source blocks in latex export:
     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     (org-roam-db-autosync-mode))
 #+end_src
+* Various
+
+** http server
+#+begin_src emacs-lisp
+  (use-package simple-httpd)
+#+end_src
+
