@@ -473,6 +473,7 @@ short keybindings in limited contexts
       "cD" 'xref-find-references
 
       "ni"  'org-insert-structure-template
+      "no"  'org-open-at-point
       "nrf" 'org-roam-node-find
       "nri" 'org-roam-node-insert
       "nrt" 'org-roam-tag-add
