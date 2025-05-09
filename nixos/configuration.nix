@@ -82,6 +82,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    jq
     graphviz
     htop
     gcc13
