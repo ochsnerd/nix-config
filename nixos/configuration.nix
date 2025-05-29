@@ -24,6 +24,7 @@
     ./direnv.nix
     ./kanata.nix
     ./tex.nix
+    ./shell.nix
 
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -33,6 +34,7 @@
     users = {
       david = import ../home-manager/home.nix;
     };
+    backupFileExtension = "backup";
   };
 
   nixpkgs = {
