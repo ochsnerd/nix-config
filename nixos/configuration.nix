@@ -89,7 +89,6 @@
     htop
     gcc13
     nix-index
-    ferdium
     spotify
     protonvpn-gui
     comma
