@@ -719,14 +719,6 @@ Code-Highlighting in for source blocks in latex export:
 
 #+end_src
 
-** org-modern
-
-#+begin_src emacs-lisp
-  (use-package org-modern
-    :hook
-    ((org-mode org-agenda-finalize-mode) . org-modern-mode))
-#+end_src
-
 ** org-roam
 
 #+begin_src emacs-lisp
