@@ -16,4 +16,5 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  environment.systemPackages = [ pkgs.r2modman ];
 }
