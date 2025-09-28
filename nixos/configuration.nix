@@ -93,6 +93,7 @@
     protonvpn-gui
     comma
     bitwarden-desktop
+    dropbox
     gnome-boxes
     gnomeExtensions.tophat
   ];

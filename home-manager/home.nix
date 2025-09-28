@@ -21,6 +21,7 @@
     ./firefox.nix
     ./chrome.nix
     ./desktop.nix
+    (import ./dropbox.nix { inherit pkgs; })
     (import ./vscode.nix { inherit pkgs; })
     (import ./emacs.nix { inherit pkgs; })
   ];
