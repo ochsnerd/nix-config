@@ -528,7 +528,7 @@ short keybindings in limited contexts
     :config
     (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
     :hook
-    ((python-ts-mode haskell-mode) . eglot-ensure))
+    ((python-ts-mode haskell-mode rust-ts-mode) . eglot-ensure))
 #+end_src
 
 ** flycheck
