@@ -433,6 +433,8 @@ short keybindings in limited contexts
 
       "SPC" 'projectile-command-map
 
+      "s" 'open-stuff
+
       "gg" 'magit
       "gb" 'magit-blame
 
@@ -701,6 +703,7 @@ Code-Highlighting in for source blocks in latex export:
     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     (org-roam-db-autosync-mode))
 #+end_src
+
 * Various
 
 ** http server
@@ -708,3 +711,10 @@ Code-Highlighting in for source blocks in latex export:
   (use-package simple-httpd)
 #+end_src
 
+** stuff
+#+begin_src emacs-lisp
+  (defun open-stuff ()
+    "Open stuff.org in a new buffer."
+    (interactive)
+  (find-file "~/Dropbox/DropsyncFiles/stuff.org"))
+#+end_src
