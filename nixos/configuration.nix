@@ -96,6 +96,7 @@
     dropbox
     gnome-boxes
     gnomeExtensions.tophat
+    libreoffice-qt6-fresh
   ];
 
   virtualisation.docker.rootless = {
