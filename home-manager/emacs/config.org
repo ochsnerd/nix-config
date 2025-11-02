@@ -529,6 +529,7 @@ short keybindings in limited contexts
     :defer t
     :config
     (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
+    (add-to-list 'eglot-server-programs `(nix-mode . ("nil")))
     :hook
     ((python-ts-mode haskell-mode rust-ts-mode) . eglot-ensure))
 #+end_src
