@@ -19,7 +19,6 @@
 
     # You can also split up your configuration and import pieces of it here:
     ./vim.nix
-    ./haskell.nix
     ./python.nix
     ./direnv.nix
     ./kanata.nix
