@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # see https://nixos.wiki/wiki/Nvidia
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];

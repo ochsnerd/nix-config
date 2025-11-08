@@ -30,6 +30,6 @@
 
       ff-yt = ''confirm_with_timestamp "firefox -P youtube" "I want to watch youtube"'';
     };
-    shellAbbrs = {};
+    shellAbbrs = { };
   };
 }
