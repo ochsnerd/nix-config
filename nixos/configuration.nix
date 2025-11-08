@@ -24,6 +24,7 @@
     ./kanata.nix
     ./tex.nix
     ./shell.nix
+    ./nix.nix
 
     inputs.home-manager.nixosModules.home-manager
   ];
