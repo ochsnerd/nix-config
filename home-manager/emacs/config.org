@@ -694,6 +694,12 @@ Code-Highlighting in for source blocks in latex export:
 
 #+end_src
 
+modify org-goto to work nicely with completion frameworks
+#+begin_src emacs-lisp
+(setq org-goto-interface 'outline-path-completion)
+(setq org-outline-path-complete-in-steps nil)
+#+end_src
+
 ** org-roam
 
 #+begin_src emacs-lisp
