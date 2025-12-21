@@ -1,9 +1,9 @@
 {
   programs.git = {
     enable = true;
-    userName = "David Ochsner";
-    # do not set email, so I'm forced to decide per repo
-    extraConfig = {
+    settings = {
+      user.name = "David Ochsner";
+      # do not set email, so I'm forced to decide per repo
       core = {
         autocrlf = false;
       };
