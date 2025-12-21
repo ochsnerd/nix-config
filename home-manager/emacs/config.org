@@ -200,14 +200,20 @@ Installed via emacs.nix to handle node dependency. // TODO: Does not work
 
 See capabilities https://github.com/karthink/gptel.
 
-#+begin_src emacs-lisp
-(use-package gptel)
-#+end_src
+Precondition: an anthropic api-key in =~/anthropic.key=
 
-Setup backend: put api key here, execute the statement (see also `~/anthropic-key`)
+#+begin_src elisp
+  (use-package gptel
+    :config
+    (defun read-key ()
+      (with-temp-buffer
+        (insert-file-contents (expand-file-name "~/anthropic.key"))
+        (string-trim (buffer-string))))
 
-#+begin_src emacs-lisp tangle: no
-(gptel-make-anthropic "Claude" :stream t :key "<anthropic key here>")
+    (gptel-make-anthropic "Claude" :stream t :key #'read-key)
+
+    (setq gptel-model 'claude-3-7-sonnet-20250219 ; get list of models by 'gptel-menu' -> -m
+          gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-key)))
 #+end_src
 
 ** TODO yasnippet
