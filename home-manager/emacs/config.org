@@ -444,6 +444,7 @@ short keybindings in limited contexts
       "gg" 'magit
       "gb" 'magit-blame
 
+      "ca" 'eglot-code-actions
       "cc" 'compile
       "cs" 'eglot
       "cf" 'eglot-format-buffer
