@@ -98,11 +98,17 @@
     gnome-boxes
     gnomeExtensions.tophat
     libreoffice-qt6-fresh
+    distrobox
   ];
 
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
+  };
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
   };
 
   programs.steam.enable = true;
