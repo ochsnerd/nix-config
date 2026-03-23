@@ -167,6 +167,7 @@ This is from the vertico readme
 #+end_src
 
 ** company
+
 #+begin_src emacs-lisp
   (use-package company
     :hook ((prog-mode LaTeX-mode latex-mode) . company-mode)
@@ -175,7 +176,7 @@ This is from the vertico readme
     (company-tooltip-align-annotations t)
     (company-require-match 'never)
     ;; Don't use company in the following modes
-    (company-global-modes '(not shell-mode eaf-mode))
+    (company-global-modes '(not shell-mode eaf-mode text-mode))
     ;; Trigger completion after a bit
     (company-idle-delay 0.1)
     ;; Number the candidates (use M-1, M-2 etc to select completions).
