@@ -131,6 +131,8 @@
 
   networking.networkmanager.enable = true;
   networking.hostName = "david";
+  # for CraneCam Pi
+  networking.firewall.allowedTCPPorts = [ 5300 ];
 
   time.timeZone = "Europe/Zurich";
 
