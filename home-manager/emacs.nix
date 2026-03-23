@@ -10,7 +10,6 @@
       extraEmacsPackages = epkgs: [
         epkgs.vterm
         epkgs.use-package
-        epkgs.copilot
         (epkgs.treesit-grammars.with-grammars (grammars: [ grammars.tree-sitter-rust ]))
         epkgs.tree-sitter-langs
       ];

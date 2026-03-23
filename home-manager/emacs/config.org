@@ -185,17 +185,6 @@ This is from the vertico readme
     (global-company-mode 1))
 #+end_src
 
-** copilot
-
-Installed via emacs.nix to handle node dependency. // TODO: Does not work
-
-#+begin_src emacs-lisp :tangle no
-(use-package copilot
-    :config
-    ;; nil means no idle-based autocompletion
-    (setq copilot-idle-delay nil))
-#+end_src
-
 ** gptel
 
 See capabilities https://github.com/karthink/gptel.
