@@ -18,6 +18,7 @@
     teams = "chromium https://teams.microsoft.com/v2/";
     ff = "firefox -P David";
     ff-cudos = "firefox -P cudos";
+    ff-everllence = "firefox -P everllence";
   };
 
   environment.systemPackages = with pkgs; [

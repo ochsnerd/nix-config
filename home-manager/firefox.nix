@@ -86,6 +86,15 @@ in
             "browser.startup.homepage" = "https://google.com";
           };
         };
+        everllence = {
+          id = 3;
+          name = "everllence";
+          isDefault = false;
+          settings = {
+            "browser.newtabpage.activity-stream.feeds.section.highlights" = true;
+            "browser.startup.homepage" = "https://google.com";
+          };
+        };
       };
     };
   };
