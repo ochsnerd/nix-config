@@ -29,6 +29,8 @@
       '';
 
       ff-yt = ''confirm_with_timestamp "firefox -P youtube" "I want to watch youtube"'';
+
+      cudos-claude = ''ANTHROPIC_API_KEY=(cat ~/anthropic.key) claude $argv'';
     };
     shellAbbrs = { };
   };
