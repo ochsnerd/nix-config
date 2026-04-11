@@ -84,6 +84,12 @@
     auto-optimise-store = true;
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   environment.systemPackages = with pkgs; [
     jq
     graphviz
@@ -122,7 +128,10 @@
     "kvm-intel"
   ];
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
+  };
 
   fonts.packages = with pkgs; [
     fira-code
