@@ -30,7 +30,15 @@
 
       ff-yt = ''confirm_with_timestamp "firefox -P youtube" "I want to watch youtube"'';
 
-      cudos-claude = ''ANTHROPIC_API_KEY=(cat ~/anthropic.key) claude $argv'';
+      cudos-claude = "ANTHROPIC_API_KEY=(cat ~/anthropic.key) claude $argv";
+
+      new-random-ghostty = ''
+        set -l themes "Dracula" "Gruvbox Dark" "Nord" "Rose Pine" "Matrix" "3024 Night" "Alien Blood" "Banana Blueberry" "Belafonte Day" "Blue Berry Pie" "Coffee Theme" "Earthsong" "Grey Green"
+
+        set -l selected_theme (random choice $themes)
+        ghostty --theme="$selected_theme" &
+        disown
+      '';
     };
     shellAbbrs = { };
   };
