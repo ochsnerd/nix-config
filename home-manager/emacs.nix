@@ -10,8 +10,12 @@
       extraEmacsPackages = epkgs: [
         epkgs.vterm
         epkgs.use-package
-        (epkgs.treesit-grammars.with-grammars (grammars: [ grammars.tree-sitter-rust ]))
-        epkgs.tree-sitter-langs
+        (epkgs.treesit-grammars.with-grammars (grammars: [
+          grammars.tree-sitter-rust
+          grammars.tree-sitter-typescript
+          grammars.tree-sitter-tsx
+          grammars.tree-sitter-python
+        ]))
       ];
     };
   };

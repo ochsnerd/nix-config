@@ -528,7 +528,7 @@ short keybindings in limited contexts
     (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
     (add-to-list 'eglot-server-programs `(nix-mode . ("nil")))
     :hook
-    ((python-ts-mode haskell-mode rust-ts-mode) . eglot-ensure))
+    ((python-ts-mode haskell-mode rust-ts-mode tsx-ts-mode) . eglot-ensure))
 #+end_src
 
 ** flycheck
@@ -545,7 +545,7 @@ short keybindings in limited contexts
     (global-flycheck-eglot-mode 1))
 #+end_src
 
-** web
+** [old] web
 
 #+begin_src emacs-lisp :tangle no
   (use-package multi-web-mode
@@ -559,7 +559,9 @@ short keybindings in limited contexts
     (multi-web-global-mode 1))
 #+end_src
 
-** typescript
+** [old] typesript
+
+ATM just using ~tsx-ts-mode~ and ~nixpkgs.typescript-language-server~ where required.
 
 TODO: github.com/AdamNiederer/ng2-mode
 
@@ -611,7 +613,7 @@ omnisharp configuration: https://github.com/OmniSharp/omnisharp-roslyn/wiki/Conf
 
 This guy keeps formatting my file while I'm editing
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package blacken
     :defer t
     :hook
@@ -619,6 +621,7 @@ This guy keeps formatting my file while I'm editing
 #+end_src
 
 ** rust
+
 #+begin_src emacs-lisp
   (use-package rust-mode)
 #+end_src
