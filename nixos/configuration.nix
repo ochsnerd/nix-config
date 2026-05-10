@@ -104,9 +104,11 @@
     gnome-boxes
     gnomeExtensions.tophat
     libreoffice-qt6-fresh
-    unstable.claude-code
     dockerfile-language-server
     yaml-language-server
+
+    unstable.claude-code
+    unstable.opencode
   ];
 
   virtualisation.docker.rootless = {
