@@ -434,14 +434,15 @@ short keybindings in limited contexts
       "gg" 'magit
       "gb" 'magit-blame
 
+      "cC" 'eglot
       "ca" 'eglot-code-actions
       "cc" 'compile
-      "cs" 'eglot
       "cf" 'eglot-format-buffer
       "cr" 'eglot-rename
       "cm" 'imenu
       "cd" 'xref-find-definitions
       "cD" 'xref-find-references
+      "cs" 'eldoc
 
       "ni"  'org-insert-structure-template
       "no"  'org-open-at-point
@@ -496,11 +497,13 @@ short keybindings in limited contexts
 
 ** treesitter
 
+Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
+
 #+begin_src emacs-lisp
-    (use-package treesit-auto
-      :config
-      (global-treesit-auto-mode)
-      (setq treesit-auto-install nil))
+  (use-package treesit-auto
+    :config
+    (global-treesit-auto-mode)
+    (setq treesit-auto-install nil))
 #+end_src
 
 ** direnv
@@ -528,7 +531,12 @@ short keybindings in limited contexts
     (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
     (add-to-list 'eglot-server-programs `(nix-mode . ("nil")))
     :hook
-    ((python-ts-mode haskell-mode rust-ts-mode tsx-ts-mode) . eglot-ensure))
+    ((python-ts-mode
+      haskell-mode
+      rust-ts-mode
+      tsx-ts-mode
+      yaml-ts-mode
+      dockerfile-ts-mode) . eglot-ensure))
 #+end_src
 
 ** flycheck
@@ -648,6 +656,79 @@ Need markdown-mode to properly display types in the echo area.
 
 #+begin_src emacs-lisp
   (use-package markdown-mode)
+#+end_src
+
+** yaml
+
+Relies on the treesitter grammar installed by ~../emacs.nix~,
+and the ~yaml-language-server~ from ~configuration.nix~.
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
+  ;; whenever you'd use yaml-mode, use yaml-ts-mode instead
+  (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
+#+end_src
+
+Tell eglot to get specific schemas. They are downloaded and cached.
+
+Note that there exists a schema for azure pipelines, but they have
+features (expression syntax ~${{ foo }}~) which are not valid yaml.
+There is a specific ~azure-pipelines-language-server~ which could be
+installed when necessary.
+
+#+begin_src emacs-lisp
+  (setq-default eglot-workspace-configuration
+                '(:yaml
+                  (:schemas
+                   (;; Compose spec — covers compose.yml, docker-compose.yml,
+                    ;; and variants like docker-compose.override.yml
+                    https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+                    ["compose.yaml"
+                     "compose.yml"
+                     "compose.*.yaml"
+                     "compose.*.yml"
+                     "docker-compose.yaml"
+                     "docker-compose.yml"
+                     "docker-compose.*.yaml"
+                     "docker-compose.*.yml"]
+
+                    ;; GitHub Actions workflows
+                    https://json.schemastore.org/github-workflow.json
+                    [".github/workflows/*.yaml"
+                     ".github/workflows/*.yml"]
+
+                    ;; GitHub Actions composite/reusable action definitions
+                    https://json.schemastore.org/github-action.json
+                    ["action.yaml"
+                     "action.yml"])
+                   ;; Optional but recommended: validation strictness, formatting
+                   :validate t
+                   :format (:enable t)
+                   :completion t
+                   :hover t)))
+#+end_src
+
+** docker
+
+*** Dockerfile lsp
+
+eglot auto-activates in ~dockerfile-ts-mode~,
+the grammar is installed by in ~../emacs.nix~,
+and the ~dockerfile-language-server~ is installed
+by ~configuration.nix~.
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("/Dockerfile\\'" . dockerfile-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.[Dd]ockerfile\\'" . dockerfile-ts-mode))
+#+end_src
+
+*** docker management
+
+Magit-like interface for managing docker, maybe try later
+#+begin_src emacs-lisp :tangle no
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
 #+end_src
 
 * org
