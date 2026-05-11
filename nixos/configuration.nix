@@ -107,8 +107,8 @@
     dockerfile-language-server
     yaml-language-server
 
-    unstable.claude-code
-    unstable.opencode
+    # unstable.claude-code
+    # unstable.opencode
   ];
 
   virtualisation.docker.rootless = {

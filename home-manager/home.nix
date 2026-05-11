@@ -25,6 +25,7 @@
     (import ./dropbox.nix { inherit pkgs; })
     (import ./vscode.nix { inherit pkgs; })
     (import ./emacs.nix { inherit pkgs; })
+    (import ./agents.nix { inherit pkgs; })
   ];
 
   nixpkgs = {
