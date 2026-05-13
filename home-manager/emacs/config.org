@@ -446,6 +446,7 @@ short keybindings in limited contexts
 
       "ni"  'org-insert-structure-template
       "no"  'org-open-at-point
+      "nt"  'org-timestamp-inactive
       "nrf" 'org-roam-node-find
       "nri" 'org-roam-node-insert
       "nrt" 'org-roam-tag-add

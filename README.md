@@ -16,3 +16,7 @@ sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#pc
 4. Add a new config to `flake.nix:nixosConfigurations`
 5. `git commit` for flakes to pick up the new file
 6. `export NIX_CONFIG="experimental-features = nix-command flakes" && nix flake update && sudo nixos-rebuild switch --flake <path to repo-root>#new-name`
+
+## Docs
+
+home manager: https://home-manager-options.extranix.com/
