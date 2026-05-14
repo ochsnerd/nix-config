@@ -26,6 +26,7 @@
     (import ./vscode.nix { inherit pkgs; })
     (import ./emacs.nix { inherit pkgs; })
     (import ./agents.nix { inherit pkgs; })
+    (import ./gpg.nix { inherit pkgs; })
   ];
 
   nixpkgs = {
