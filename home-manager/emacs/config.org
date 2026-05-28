@@ -544,7 +544,12 @@ Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
 
 #+begin_src emacs-lisp
   (use-package flycheck
-    :init (global-flycheck-mode))
+    :init (global-flycheck-mode)
+    :custom
+    ;; this fixes 'Error from syntax checker org-lint ...'
+    ;; per https://stackoverflow.com/a/79897658
+    (flycheck-disabled-checkers '(org-lint))
+    )
 #+end_src
 
 #+begin_src emacs-lisp
