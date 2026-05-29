@@ -1,6 +1,4 @@
 {
-  description = "Your new nix config";
-
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -18,9 +16,10 @@
     # TODO: Add any other flake you might need
     # hardware.url = "github:nixos/nixos-hardware";
 
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
+    eca = {
+      url = "github:editor-code-assistant/eca";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
