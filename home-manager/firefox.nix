@@ -1,4 +1,32 @@
 # originally from https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265
+
+# I had to write the following by hand in
+# ~/.mozilla/firefox/profiles.ini
+# [Profile0]
+# Name=David
+# IsRelative=1
+# Path=david
+# Default=1
+
+# [Profile1]
+# Name=cudos
+# IsRelative=1
+# Path=cudos
+
+# [Profile2]
+# Name=youtube
+# IsRelative=1
+# Path=youtube
+
+# [Profile3]
+# Name=everllence
+# IsRelative=1
+# Path=everllence
+
+# [General]
+# StartWithLastProfile=1
+# Version=2
+
 {
   config,
   pkgs,

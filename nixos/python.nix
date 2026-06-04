@@ -2,7 +2,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    (python312.withPackages (
+    (python313.withPackages (
       ps: with ps; [
         black
         pygments # syntax highlighting for orgmode latex export

@@ -19,4 +19,5 @@ sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#pc
 
 ## Docs
 
+nixos options: https://search.nixos.org/options
 home manager: https://home-manager-options.extranix.com/
