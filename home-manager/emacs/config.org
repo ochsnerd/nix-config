@@ -548,6 +548,7 @@ Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
     :hook
     ((python-ts-mode
       haskell-mode
+      nix-mode
       rust-ts-mode
       typescript-ts-mode
       tsx-ts-mode
