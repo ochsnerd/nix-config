@@ -509,15 +509,16 @@ short keybindings in limited contexts
 
 * Programming
 
-** treesitter
+** treesit-auto
 
 Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
+    :custom (treesit-auto-install nil)
     :config
     (global-treesit-auto-mode)
-    (setq treesit-auto-install nil))
+    (treesit-auto-add-to-auto-mode-alist 'all))
 #+end_src
 
 ** direnv
@@ -548,6 +549,7 @@ Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
     ((python-ts-mode
       haskell-mode
       rust-ts-mode
+      typescript-ts-mode
       tsx-ts-mode
       yaml-ts-mode
       dockerfile-ts-mode) . eglot-ensure))
@@ -679,11 +681,11 @@ Need markdown-mode to properly display types in the echo area.
 
 ** yaml
 
+[[treesit-auto]] activates ~yaml-ts-mode~ is yaml files.
 Relies on the treesitter grammar installed by ~../emacs.nix~,
 and the ~yaml-language-server~ from ~configuration.nix~.
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
   ;; whenever you'd use yaml-mode, use yaml-ts-mode instead
   (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
 #+end_src
@@ -731,15 +733,9 @@ installed when necessary.
 
 *** Dockerfile lsp
 
-eglot auto-activates in ~dockerfile-ts-mode~,
-the grammar is installed by in ~../emacs.nix~,
-and the ~dockerfile-language-server~ is installed
-by ~configuration.nix~.
-
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("/Dockerfile\\'" . dockerfile-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.[Dd]ockerfile\\'" . dockerfile-ts-mode))
-#+end_src
+[[treesit-auto]] activates ~dockerfile-ts-mode~ in dockerfiles.
+eglot auto-activates in ~dockerfile-ts-mode~, the grammar is installed by in ~../emacs.nix~,
+and the ~dockerfile-language-server~ is installed by ~configuration.nix~.
 
 *** docker management
 
