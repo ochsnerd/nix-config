@@ -20,6 +20,11 @@
       url = "github:editor-code-assistant/eca";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lofi = {
+      url = "github:ochsnerd/lo-fi-mockups";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -206,11 +206,25 @@ Precondition: an anthropic api-key in =~/anthropic.key=
           gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-key)))
 #+end_src
 
-** TODO eca
+** agent-shell
 
-#+begin_src elisp :tangle no
-  (use-package eca
-    :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
+This works "out of the box" when opencode is installed.
+Todo:
+- Default values?
+- How to switch modes?
+
+#+begin_src elisp
+  (use-package agent-shell
+    :ensure t
+    :config
+    (evil-define-key 'insert agent-shell-mode-map (kbd "RET") #'newline)
+    (evil-define-key 'normal agent-shell-mode-map (kbd "RET") #'comint-send-input)
+
+    ;; Configure *agent-shell-diff* buffers to start in Emacs state
+    (add-hook 'diff-mode-hook
+  	    (lambda ()
+  	      (when (string-match-p "\\*agent-shell-diff\\*" (buffer-name))
+  		(evil-emacs-state)))))
 #+end_src
 
 ** TODO yasnippet
@@ -466,6 +480,8 @@ short keybindings in limited contexts
 
       "pp" 'gptel-send
       "pm" 'gptel-menu
+
+      "pc" 'claude-code-ide-menu
       ))
 #+end_src
 
