@@ -269,6 +269,12 @@ Todo:
   (set-fringe-mode 10)
 #+end_src
 
+The scratch buffer being org-mode is more helpful than elisp.
+
+#+begin_src emacs-lisp
+  (setq initial-major-mode 'org-mode)
+#+end_src
+
 ** Visual bell
 
 #+begin_src emacs-lisp
