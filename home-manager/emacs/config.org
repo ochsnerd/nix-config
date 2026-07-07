@@ -161,9 +161,25 @@ This is from the vertico readme
     ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
     ;; (orderless-component-separator #'orderless-escapable-split-on-space)
     (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles partial-completion))))
+    (completion-category-overrides '((file (styles partial-completion orderless))))
     (completion-category-defaults nil) ;; Disable defaults, use our settings
     (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+#+end_src
+
+** marginalia
+
+Annotations in the minibuffer completions.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :init
+    (marginalia-mode))
+#+end_src
+
+** consult
+
+#+begin_src emacs-lisp
+  (use-package consult)
 #+end_src
 
 ** company
@@ -386,13 +402,10 @@ From doom-emacs
 
 #+begin_src emacs-lisp
   (use-package helpful
-    :custom
-    (counsel-describe-function-function #'helpful-callable)
-    (counsel-describe-variable-function #'helpful-variable)
     :bind
-    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-function] . helpful-callable)
     ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-variable] . helpful-variable)
     ([remap describe-key] . helpful-key))
 #+end_src
 
@@ -451,8 +464,8 @@ short keybindings in limited contexts
       "w" 'evil-window-map
       "h" 'help-command
 
-      "." 'counsel-find-file
-      "," 'counsel-ibuffer
+      "." 'find-file
+      "," 'consult-buffer
 
       "SPC" 'projectile-command-map
 
@@ -505,17 +518,17 @@ short keybindings in limited contexts
     :config
     (projectile-mode)
     :custom
-    ((projectile-completion-system 'ivy))
+    ((projectile-completion-system 'default))
     :init
     ;; (when (file-directory-p "~/root-for-all-code")
     ;;   (setq projectile-project-search-path '("~/root-for-all-code")))
     (setq projectile-switch-project-action #'projectile-dired))
 #+end_src
 
+
 #+begin_src emacs-lisp
-  (use-package counsel-projectile
-    :config
-    (counsel-projectile-mode))
+  (use-package consult-projectile
+    :after (consult projectile))
 #+end_src
 
 * Version control
