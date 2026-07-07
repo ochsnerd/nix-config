@@ -771,9 +771,6 @@ Magit-like interface for managing docker, maybe try later
 
 * org
 
-blocks: ~<sTAB~ does not work anymore, restore it by ~(require 'org-tempo)~.
-The function is ~org-insert-structure-template~.
-
 #+begin_src emacs-lisp
   (use-package org
     :ensure nil
@@ -781,7 +778,10 @@ The function is ~org-insert-structure-template~.
     :custom
     (org-confirm-babel-evaluate 'nil)
     (org-todo-keywords
-     '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE" "CANCELED")))
+     '((sequence "TODO" "IN-PROGRESS(!)" "REVIEW(!)" "|" "DONE(!)" "CANCELED(!)")))
+    (org-log-into-drawer t)
+    ;; This might be interesting
+    ;; (org-log-done 'time)
     :config
     (org-babel-do-load-languages
      'org-babel-load-languages
