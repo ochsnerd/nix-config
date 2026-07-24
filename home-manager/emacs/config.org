@@ -504,10 +504,17 @@ short keybindings in limited contexts
     (setq projectile-switch-project-action #'projectile-dired))
 #+end_src
 
+Allows using consult to select project if no project is selected.
 
 #+begin_src emacs-lisp
   (use-package consult-projectile
     :after (consult projectile))
+#+end_src
+
+Required for ~projectile-ripgrep~ to work.
+
+#+begin_src emacs-lisp
+  (use-package rg)
 #+end_src
 
 * Version control
