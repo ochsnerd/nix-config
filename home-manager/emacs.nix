@@ -18,6 +18,7 @@
           grammars.tree-sitter-python
           grammars.tree-sitter-dockerfile
           grammars.tree-sitter-yaml
+          grammars.tree-sitter-html
         ]))
       ];
     };
