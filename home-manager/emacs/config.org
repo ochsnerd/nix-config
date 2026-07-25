@@ -497,7 +497,9 @@ short keybindings in limited contexts
     :config
     (projectile-mode)
     :custom
-    ((projectile-completion-system 'default))
+    (projectile-completion-system 'default)
+    ;; 'alien leads to frozen "projectile is indexing"
+    (projectile-indexing-method 'hybrid)
     :init
     ;; (when (file-directory-p "~/root-for-all-code")
     ;;   (setq projectile-project-search-path '("~/root-for-all-code")))
