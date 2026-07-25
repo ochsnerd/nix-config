@@ -562,12 +562,22 @@ Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
 
 ** eglot
 
+This defines ~my/eglot-workspace-configs~ for later language-specific blocks to add to.
+
 #+begin_src emacs-lisp
+  (defvar my/eglot-workspace-configs '()
+    "Alist of (MODE . CONFIG-PLIST) for per-mode eglot workspace configuration.")
+
   (use-package eglot
     :defer t
     :config
     (add-to-list 'eglot-server-programs `(csharp-mode . ("OmniSharp" "-lsp")))
     (add-to-list 'eglot-server-programs `(nix-mode . ("nil")))
+    (setq-default eglot-workspace-configuration
+                  (lambda (_server)
+                    (cl-loop for (mode . config) in my/eglot-workspace-configs
+                             when (derived-mode-p mode)
+                             return config)))
     :hook
     ((python-ts-mode
       haskell-mode
@@ -677,6 +687,9 @@ This guy keeps formatting my file while I'm editing
 
 #+begin_src emacs-lisp
   (use-package rust-mode)
+
+  (add-to-list 'my/eglot-workspace-configs
+               '(rust-ts-mode . (:rust-analyzer (:check (:command "clippy")))))
 #+end_src
 
 ** nix
@@ -722,35 +735,35 @@ There is a specific ~azure-pipelines-language-server~ which could be
 installed when necessary.
 
 #+begin_src emacs-lisp
-  (setq-default eglot-workspace-configuration
-                '(:yaml
-                  (:schemas
-                   (;; Compose spec — covers compose.yml, docker-compose.yml,
-                    ;; and variants like docker-compose.override.yml
-                    https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
-                    ["compose.yaml"
-                     "compose.yml"
-                     "compose.*.yaml"
-                     "compose.*.yml"
-                     "docker-compose.yaml"
-                     "docker-compose.yml"
-                     "docker-compose.*.yaml"
-                     "docker-compose.*.yml"]
+  (add-to-list 'my/eglot-workspace-configs
+               '(yaml-ts-mode . (:yaml
+                                  (:schemas
+                                   (;; Compose spec — covers compose.yml, docker-compose.yml,
+                                    ;; and variants like docker-compose.override.yml
+                                    https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+                                    ["compose.yaml"
+                                     "compose.yml"
+                                     "compose.*.yaml"
+                                     "compose.*.yml"
+                                     "docker-compose.yaml"
+                                     "docker-compose.yml"
+                                     "docker-compose.*.yaml"
+                                     "docker-compose.*.yml"]
 
-                    ;; GitHub Actions workflows
-                    https://json.schemastore.org/github-workflow.json
-                    [".github/workflows/*.yaml"
-                     ".github/workflows/*.yml"]
+                                    ;; GitHub Actions workflows
+                                    https://json.schemastore.org/github-workflow.json
+                                    [".github/workflows/*.yaml"
+                                     ".github/workflows/*.yml"]
 
-                    ;; GitHub Actions composite/reusable action definitions
-                    https://json.schemastore.org/github-action.json
-                    ["action.yaml"
-                     "action.yml"])
-                   ;; Optional but recommended: validation strictness, formatting
-                   :validate t
-                   :format (:enable t)
-                   :completion t
-                   :hover t)))
+                                    ;; GitHub Actions composite/reusable action definitions
+                                    https://json.schemastore.org/github-action.json
+                                    ["action.yaml"
+                                     "action.yml"])
+                                   ;; Optional but recommended: validation strictness, formatting
+                                   :validate t
+                                   :format (:enable t)
+                                   :completion t
+                                   :hover t))))
 #+end_src
 
 ** docker
