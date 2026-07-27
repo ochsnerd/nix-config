@@ -108,9 +108,9 @@
     libreoffice-qt6-fresh
     dockerfile-language-server
     yaml-language-server
+    pandoc
 
-    # unstable.claude-code
-    # unstable.opencode
+    # from overlays
     lofi
   ];
 
