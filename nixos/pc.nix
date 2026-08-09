@@ -15,9 +15,10 @@
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = true;
+    open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # pin to legacy channel to support Pascal (GTX 1070)
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   environment.systemPackages = [ pkgs.r2modman ];
