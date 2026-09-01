@@ -28,6 +28,7 @@
     fzf
     fishPlugins.grc
     grc
+    zellij
   ];
 
   # see the rest in home-manager/shell.nix

@@ -519,6 +519,20 @@ Required for ~projectile-ripgrep~ to work.
   (use-package rg)
 #+end_src
 
+** workspace
+
+Starting a workspace (see [[../shell.nix]]) in a terminal window
+
+#+begin_src emacs-lisp
+  (defun my/workspace-start ()
+  "Launch a Ghostty window and run workspace-start in the current directory."
+  (interactive)
+  (start-process "ghostty-workspace"
+                 nil ; Do not attach an Emacs buffer to this process
+                 "ghostty"
+                 "-e" "fish" "-C" "workspace-start"))
+#+end_src
+
 * Version control
 ** magit
 
