@@ -1,8 +1,6 @@
 { pkgs, ... }:
 {
-  programs.fish = {
-    enable = true;
-  };
+  programs.fish.enable = true;
 
   # do not set fish as the default shell (might break stuff)
   # instead, start fish from bash
@@ -32,5 +30,5 @@
     grc
   ];
 
-  # see the rest in home-manager/fish.nix
+  # see the rest in home-manager/shell.nix
 }

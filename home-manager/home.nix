@@ -18,7 +18,7 @@
     # inputs.nix-colors.homeManagerModules.default
 
     ./git.nix
-    ./fish.nix
+    ./shell.nix
     ./firefox.nix
     ./chrome.nix
     ./desktop.nix
