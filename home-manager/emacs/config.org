@@ -503,7 +503,7 @@ short keybindings in limited contexts
     :init
     ;; (when (file-directory-p "~/root-for-all-code")
     ;;   (setq projectile-project-search-path '("~/root-for-all-code")))
-    (setq projectile-switch-project-action #'projectile-dired))
+    (setq projectile-switch-project-action #'projectile-vc))
 #+end_src
 
 Allows using consult to select project if no project is selected.
