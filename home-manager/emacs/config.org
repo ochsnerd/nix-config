@@ -820,8 +820,8 @@ Magit-like interface for managing docker, maybe try later
     :custom
     (org-confirm-babel-evaluate 'nil)
     (org-todo-keywords
-     '((sequence "TODO" "IN-PROGRESS(!)" "REVIEW(!)" "|" "DONE(!)" "CANCELED(!)")))
-    (org-log-into-drawer t)
+     '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE" "CANCELED")))
+    ;; (org-log-into-drawer t)
     ;; This might be interesting
     ;; (org-log-done 'time)
     :config
