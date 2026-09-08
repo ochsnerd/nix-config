@@ -864,8 +864,23 @@ Share the daily-directory with roam on my phone.
     :custom
     (org-roam-directory (file-truename "~/org/roam"))
     (org-roam-dailies-directory (file-truename "~/Dropbox/DropsyncFiles/roam/daily/"))
+    (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     :config
-    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+
+    (defvar my/org-roam-daily-head
+      (concat "#+title: %<%Y-%m-%d>\n"
+              "* [0/0] Tasks\n"
+              "* Journal\n"
+              "* Refile\n"))
+
+    (setq org-roam-dailies-capture-templates
+  	`(("d" "default" entry "* %?"
+             :target (file+head+olp "%<%Y-%m-%d>.org" ,my/org-roam-daily-head ("Refile")))
+            ("j" "journal" entry "* %?"
+             :target (file+head+olp "%<%Y-%m-%d>.org" ,my/org-roam-daily-head ("Journal")))
+            ("t" "task" entry "* TODO %?"
+             :target (file+head+olp "%<%Y-%m-%d>.org" ,my/org-roam-daily-head ("Tasks")))))
+
     (org-roam-db-autosync-mode))
 #+end_src
 
