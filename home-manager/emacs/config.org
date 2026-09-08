@@ -449,7 +449,7 @@ short keybindings in limited contexts
 
       "SPC" 'projectile-command-map
 
-      "s" 'open-stuff
+      "s" 'my/open-stuff
 
       "gg" 'magit
       "gb" 'magit-blame
@@ -878,7 +878,7 @@ Share the daily-directory with roam on my phone.
 
 ** stuff
 #+begin_src emacs-lisp
-  (defun open-stuff ()
+  (defun my/open-stuff ()
     "Open stuff.org in a new buffer."
     (interactive)
   (find-file "~/Dropbox/DropsyncFiles/stuff.org"))
