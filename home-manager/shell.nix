@@ -94,7 +94,8 @@
       "__workspace_session_name" = {
         description = "Canonical zellij session name for <root> <workspace>";
         body = ''
-          string replace -ra '[^a-zA-Z0-9_-]' '-' (path basename $argv[1])-$argv[2]
+          set -l name (string replace -ra '[^a-zA-Z0-9_-]' '-' (path basename $argv[1])-$argv[2])
+          string sub -l 24 -- $name
         '';
       };
 
