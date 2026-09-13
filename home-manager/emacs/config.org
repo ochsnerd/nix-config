@@ -818,7 +818,11 @@ Magit-like interface for managing docker, maybe try later
     :ensure nil
     :defer t
     :custom
-    (org-confirm-babel-evaluate 'nil)
+    ;; Ask only when evaluating shell blocks
+    (org-confirm-babel-evaluate
+     (lambda (lang _body)
+       (member lang '("shell" "sh" "bash" "zsh" "fish"))))
+    (org-babel-sh-command "bash")
     (org-todo-keywords
      '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE" "CANCELED")))
     ;; (org-log-into-drawer t)
@@ -832,8 +836,10 @@ Magit-like interface for managing docker, maybe try later
        (dot . t)
        (python . t)
        (plantuml . t)
-       (haskell . t)))
-    :hook ((org-mode . visual-line-mode)))
+       (haskell . t)
+       (shell . t)))
+    :hook
+    ((org-mode . visual-line-mode)))
 #+end_src
 
 Code-Highlighting in for source blocks in latex export:
