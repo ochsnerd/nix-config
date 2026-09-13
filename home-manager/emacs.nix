@@ -30,6 +30,11 @@
       recursive = true;
     };
   };
-  # emacs daemon
-  # services.emacs.package = pkgs.emacs-unstable;
+
+  services.emacs = {
+    enable = true;
+    startWithUserSession = "graphical";
+    socketActivation.enable = true;
+    client.enable = true;
+  };
 }
