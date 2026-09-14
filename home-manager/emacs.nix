@@ -11,14 +11,15 @@
         epkgs.vterm
         epkgs.use-package
         epkgs.tree-sitter-langs
-        (epkgs.treesit-grammars.with-grammars (grammars: [
-          grammars.tree-sitter-rust
-          grammars.tree-sitter-typescript
-          grammars.tree-sitter-tsx
-          grammars.tree-sitter-python
-          grammars.tree-sitter-dockerfile
-          grammars.tree-sitter-yaml
-          grammars.tree-sitter-html
+        (epkgs.treesit-grammars.with-grammars (gs: [
+          gs.tree-sitter-rust
+          gs.tree-sitter-typescript
+          gs.tree-sitter-tsx
+          gs.tree-sitter-python
+          gs.tree-sitter-dockerfile
+          gs.tree-sitter-yaml
+          gs.tree-sitter-html
+          gs.tree-sitter-bash
         ]))
       ];
     };
