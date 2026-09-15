@@ -96,7 +96,6 @@
     jq
     graphviz
     htop
-    gcc13
     spotify
     proton-vpn
     # deactivated because it uses unsafe electron version
