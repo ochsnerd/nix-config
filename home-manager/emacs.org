@@ -3,24 +3,14 @@
 
 * How this works
 
-- this file is linked in ~../emacs.nix~ as config, and gets
-  scanned by nix for ~use-package~ macros. Nix then installs
-  the dependencies during rebuild (I think)
-- home-manager takes the files in this folder (as of now, ~config.org~ and ~init.el~)
-  and copies them write-only into the store, then symlinks them into ~~/.config/emacs~
-  - write-only forces me to update the files in the nix config and thus keeps it updated
-  - somehow it gets the timestamp set to 0. This is relevant as ~org-babel-load-file~ only
-    tangles if the timestamp of the ~.org~ file is newer than the ~.el~ file. To force retangling,
-    we have to delete ~config.el~ before loading ~config.org~.
-- on startup, emacs tangles codeblocks from here into ~config.el~, then loads the resulting file
-  - this means the tangled config is always up to date with the nix config
-  - probably pretty bad for startup time, depending on how the tangle works
-    - in theory only have to tangle once per rebuild
-    - the tangled file does not get touched after (timestamp), just a question of
-      how emacs decides it does not need to touch the file
-      
+- This file is picked up by [[https://github.com/nix-community/emacs-overlay][emacs overlay]] and scanned for ~use-package-forms~.
+- The required packages are installed.
+- The tangled blocks are byte-compiled and written to ~/nix/store/...-emacs-default-0.1.0~,
+  which is then loaded magically by emacs.
+
 * TODO code evaluation in orgmode
 ** c++
+** c#
 * TODO early-init.el
 * Other configs
 
@@ -36,18 +26,17 @@ https://github.com/MatthewZMD/.emacs.d
 #+end_src
 
 * Package setup
-** TODO package
 
-TODO: Do we alwyas have to update package-archive-contents?
+Packages are handled by nix, but it's still useful to imperatively
+install stuff for testing.
+
+** package
 
 #+begin_src emacs-lisp
-  (require 'package)
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("org" . "https://orgmode.org/elpa/")
-                           ("gnu" . "http://elpa.gnu.org/packages/")))
-
-  ;; (unless package-archive-contents
-  ;;   (package-refresh-contents))
+   (require 'package)
+   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+   			 ("org" . "https://orgmode.org/elpa/")
+                            ("gnu" . "http://elpa.gnu.org/packages/")))
 #+end_src
 
 ** use-package
@@ -438,53 +427,52 @@ short keybindings in limited contexts
 
 #+begin_src emacs-lisp
   (use-package general
+    :demand t
     :config
-    (general-create-definer spc-leader
-      :states '(normal visual insert emacs)
-      :keymaps 'override
-      :prefix "SPC"
-      :non-normal-prefix "C-SPC")
-    (spc-leader
-      "w" 'evil-window-map
-      "h" 'help-command
+    (general-define-key
+     :states '(normal visual insert emacs)
+     :keymaps 'override
+     :prefix "SPC"
+     :non-normal-prefix "C-SPC"
+     "w" 'evil-window-map
+     "h" 'help-command
 
-      "." 'find-file
-      "," 'consult-buffer
+     "." 'find-file
+     "," 'consult-buffer
 
-      "SPC" 'projectile-command-map
+     "SPC" 'projectile-command-map
 
-      "s" 'my/open-stuff
+     "s" 'my/open-stuff
 
-      "gg" 'magit
-      "gb" 'magit-blame
+     "gg" 'magit
+     "gb" 'magit-blame
 
-      "cC" 'eglot
-      "ca" 'eglot-code-actions
-      "cc" 'compile
-      "cf" 'eglot-format-buffer
-      "cr" 'eglot-rename
-      "cm" 'imenu
-      "cd" 'xref-find-definitions
-      "cD" 'xref-find-references
-      "cs" 'eldoc
+     "cC" 'eglot
+     "ca" 'eglot-code-actions
+     "cc" 'compile
+     "cf" 'eglot-format-buffer
+     "cr" 'eglot-rename
+     "cm" 'imenu
+     "cd" 'xref-find-definitions
+     "cD" 'xref-find-references
+     "cs" 'eldoc
 
-      "ni"  'org-insert-structure-template
-      "no"  'org-open-at-point
-      "nt"  'org-timestamp-inactive
-      "nrf" 'org-roam-node-find
-      "nri" 'org-roam-node-insert
-      "nrt" 'org-roam-tag-add
-      "nrdd" 'org-roam-dailies-capture-today
-      "nrdt" 'org-roam-dailies-capture-tomorrow
-      "nrdy" 'org-roam-dailies-capture-yesterday
-      "nrdD" 'org-roam-dailies-goto-today
-      "nrdT" 'org-roam-dailies-goto-tomorrow
-      "nrdY" 'org-roam-dailies-goto-yesterday
-      "nrdc" 'org-roam-dailies-goto-date
+     "ni"  'org-insert-structure-template
+     "no"  'org-open-at-point
+     "nt"  'org-timestamp-inactive
+     "nrf" 'org-roam-node-find
+     "nri" 'org-roam-node-insert
+     "nrt" 'org-roam-tag-add
+     "nrdd" 'org-roam-dailies-capture-today
+     "nrdt" 'org-roam-dailies-capture-tomorrow
+     "nrdy" 'org-roam-dailies-capture-yesterday
+     "nrdD" 'org-roam-dailies-goto-today
+     "nrdT" 'org-roam-dailies-goto-tomorrow
+     "nrdY" 'org-roam-dailies-goto-yesterday
+     "nrdc" 'org-roam-dailies-goto-date
 
-      "pp" 'gptel-send
-      "pm" 'gptel-menu
-      ))
+     "pp" 'gptel-send
+     "pm" 'gptel-menu))
 #+end_src
 
 *** Examples
@@ -831,11 +819,9 @@ Magit-like interface for managing docker, maybe try later
      (lambda (lang _body)
        (member lang '("shell" "sh" "bash" "zsh" "fish"))))
     (org-babel-sh-command "bash")
+    
     (org-todo-keywords
      '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE" "CANCELED")))
-    ;; (org-log-into-drawer t)
-    ;; This might be interesting
-    ;; (org-log-done 'time)
     :config
     (org-babel-do-load-languages
      'org-babel-load-languages

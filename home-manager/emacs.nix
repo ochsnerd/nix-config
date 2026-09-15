@@ -5,8 +5,9 @@
     enable = true;
     package = pkgs.emacsWithPackagesFromUsePackage {
       package = pkgs.emacs;
-      config = ./emacs/config.org;
-      alwaysEnsure = false;
+      config = ./emacs.org;
+      defaultInitFile = true;
+      alwaysEnsure = true;
       extraEmacsPackages = epkgs: [
         epkgs.vterm
         epkgs.use-package
@@ -22,13 +23,6 @@
           gs.tree-sitter-bash
         ]))
       ];
-    };
-  };
-
-  home.file = {
-    ".config/emacs" = {
-      source = ./emacs;
-      recursive = true;
     };
   };
 
