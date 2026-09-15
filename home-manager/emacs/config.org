@@ -841,7 +841,8 @@ Magit-like interface for managing docker, maybe try later
        (python . t)
        (plantuml . t)
        (haskell . t)
-       (shell . t)))
+       (shell . t)
+       (mermaid . t)))
     :hook
     ((org-mode . visual-line-mode)))
 #+end_src
@@ -892,6 +893,21 @@ Share the daily-directory with roam on my phone.
              :target (file+head+olp "%<%Y-%m-%d>.org" ,my/org-roam-daily-head ("Tasks")))))
 
     (org-roam-db-autosync-mode))
+#+end_src
+
+** mermaid
+
+Requires ~mmdc~ (mermaid-cli) in path, and ~mermaid~ to be registered with ~org-babel-languages~.
+
+#+begin_src emacs-lisp
+  (use-package ob-mermaid)
+#+end_src
+
+Diagram example:
+
+#+begin_src mermaid :file test.png :tangle no
+sequenceDiagram
+ A-->B: Works!
 #+end_src
 
 * Various

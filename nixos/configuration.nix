@@ -107,7 +107,9 @@
     libreoffice-qt6-fresh
     dockerfile-language-server
     yaml-language-server
+
     pandoc
+    mermaid-cli
 
     # from overlays
     lofi
