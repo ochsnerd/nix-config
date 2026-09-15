@@ -419,9 +419,13 @@ TODO: rune/evil-hook?
 
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
+#+end_src
 
+#+begin_src emacs-lisp
   (use-package evil-collection
     :after evil
+    :custom
+    (evil-collection-calendar-want-org-bindings t)
     :config
     (evil-collection-init))
 #+end_src
