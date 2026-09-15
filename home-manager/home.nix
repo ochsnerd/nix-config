@@ -74,6 +74,12 @@
 
   programs.home-manager.enable = true;
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
