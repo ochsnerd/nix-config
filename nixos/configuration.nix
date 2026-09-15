@@ -28,6 +28,7 @@
     ./nix.nix
 
     inputs.home-manager.nixosModules.home-manager
+    inputs.nix-index-database.nixosModules.default
   ];
 
   home-manager = {
@@ -96,10 +97,8 @@
     graphviz
     htop
     gcc13
-    nix-index
     spotify
     proton-vpn
-    comma
     # deactivated because it uses unsafe electron version
     # bitwarden-desktop
     dropbox
@@ -120,6 +119,8 @@
   };
 
   programs.steam.enable = true;
+
+  programs.nix-index-database.comma.enable = true;
 
   # This does not work properly (window thinks its a terminal)
   # see eg. https://stackoverflow.com/q/78297898
