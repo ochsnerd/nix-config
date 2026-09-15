@@ -32,6 +32,8 @@
   ];
 
   home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
       david = import ../home-manager/home.nix;
@@ -47,9 +49,8 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
 
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
       inputs.lofi.overlays.default
+      (import inputs.emacs-overlay)
 
       # Or define it inline, for example:
       # (final: prev: {
