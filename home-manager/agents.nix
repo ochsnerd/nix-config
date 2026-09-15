@@ -2,7 +2,7 @@
 {
   programs.opencode = {
     enable = true;
-    package = pkgs.unstable.opencode;
+    package = pkgs.opencode;
     # TODO: As soon as home-manager exposes the tui, set scroll_speed here
     # https://home-manager-options.extranix.com/?query=opencode
     settings = {
