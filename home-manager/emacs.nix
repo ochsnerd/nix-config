@@ -11,6 +11,7 @@
       extraEmacsPackages = epkgs: [
         epkgs.vterm
         epkgs.use-package
+        epkgs.org # gives me 9.8, remove if builtin orgmode has caught up
         epkgs.tree-sitter-langs
         (epkgs.treesit-grammars.with-grammars (gs: [
           gs.tree-sitter-rust
