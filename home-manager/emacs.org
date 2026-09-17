@@ -471,6 +471,8 @@ short keybindings in limited contexts
      "nrdY" 'org-roam-dailies-goto-yesterday
      "nrdc" 'org-roam-dailies-goto-date
 
+     "mp" 'markdown-toggle-markup-hiding
+
      "pp" 'gptel-send
      "pm" 'gptel-menu))
 #+end_src
@@ -729,7 +731,9 @@ Used for editing markdown files, also formatting (e.g. types) in the echo-area.
 #+begin_src emacs-lisp
   (use-package markdown-mode
     :mode ("README\\.md\\'" . gfm-mode)
-    :init (setq markdown-command "pandoc")
+    :custom
+    (markdown-fontify-code-blocks-natively t)
+    (markdown-command "pandoc")
     :bind (:map markdown-mode-map
                 ;; align with org-mode
                 ("M-<left>"  . markdown-promote)
