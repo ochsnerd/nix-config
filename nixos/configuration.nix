@@ -23,7 +23,6 @@
     ./python.nix
     ./direnv.nix
     ./kanata.nix
-    ./tex.nix
     ./shell.nix
     ./nix.nix
 
