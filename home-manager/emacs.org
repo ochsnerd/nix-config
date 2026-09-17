@@ -559,9 +559,8 @@ Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
 ** direnv
 
 #+begin_src emacs-lisp
-  (use-package direnv
-    :config
-    (direnv-mode))
+  (use-package envrc
+    :hook (after-init . envrc-global-mode))
 #+end_src
 
 ** editorconfig
