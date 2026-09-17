@@ -560,7 +560,8 @@ Note that the treesitter-grammars are installed by nix in ~../emacs.nix~
 
 #+begin_src emacs-lisp
   (use-package envrc
-    :hook (after-init . envrc-global-mode))
+    :hook
+    (after-init . envrc-global-mode))
 #+end_src
 
 ** editorconfig
@@ -825,11 +826,14 @@ Magit-like interface for managing docker, maybe try later
     
     (org-todo-keywords
      '((sequence "TODO" "IN-PROGRESS" "REVIEW" "|" "DONE" "CANCELED")))
+
+    (org-babel-csharp-default-target-framework "net10.0")
     :config
     (org-babel-do-load-languages
      'org-babel-load-languages
      '(
        (C . t)
+       (csharp . t)
        (dot . t)
        (python . t)
        (plantuml . t)
@@ -840,7 +844,19 @@ Magit-like interface for managing docker, maybe try later
     ((org-mode . visual-line-mode)))
 #+end_src
 
-Code-Highlighting in for source blocks in latex export:
+** babel, csharp
+
+~org-babel-csharp-default-target-framework~ has to be set at the time org loads, so it cannot be default-detected based on direnv.
+
+babel invokes source-block in a way that needs dotnet root to be set. This can be done by adding something along the lines of
+
+#+begin_src nix
+  DOTNET_ROOT = "${pkgs.dotnetCorePackages.sdk_10_0}/share/dotnet";
+#+end_src
+
+to the flake.
+
+Code-Highlighting in for source blocks in latex export
 #+begin_src emacs-lisp
 (require 'ox-latex)
 (add-to-list 'org-latex-packages-alist '("" "minted"))
@@ -854,6 +870,7 @@ Code-Highlighting in for source blocks in latex export:
 #+end_src
 
 modify org-goto to work nicely with completion frameworks
+
 #+begin_src emacs-lisp
 (setq org-goto-interface 'outline-path-completion)
 (setq org-outline-path-complete-in-steps nil)
