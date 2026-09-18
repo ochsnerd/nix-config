@@ -76,7 +76,6 @@
           modules = [
             ./pc/nixos/configuration.nix
             ./pc/nixos/hardware-configuration.nix
-            ./pc/nixos/pc.nix
           ];
         };
         framework = nixpkgs.lib.nixosSystem {

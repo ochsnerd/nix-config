@@ -20,11 +20,8 @@
 
     # You can also split up your configuration and import pieces of it here:
     ./vim.nix
-    ./python.nix
-    ./direnv.nix
     ./kanata.nix
     ./shell.nix
-    ./nix.nix
 
     inputs.home-manager.nixosModules.home-manager
     inputs.nix-index-database.nixosModules.default
@@ -93,41 +90,31 @@
   };
 
   environment.systemPackages = with pkgs; [
-    jq
-    graphviz
     htop
     spotify
     proton-vpn
-    # deactivated because it uses unsafe electron version
-    # bitwarden-desktop
-    dropbox
-    gnome-boxes
-    gnomeExtensions.tophat
-    libreoffice-qt6-fresh
-    dockerfile-language-server
-    yaml-language-server
-
-    pandoc
-    mermaid-cli
-
-    # from overlays
-    lofi
+    r2modman
   ];
 
-  virtualisation.docker.rootless = {
+  # see https://nixos.wiki/wiki/Nvidia
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.graphics = {
     enable = true;
-    setSocketVariable = true;
+  };
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    # pin to legacy channel to support Pascal (GTX 1070)
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   programs.steam.enable = true;
 
   programs.nix-index-database.comma.enable = true;
-
-  virtualisation.libvirtd.enable = true;
-  boot.kernelModules = [
-    "kvm-amd"
-    "kvm-intel"
-  ];
 
   boot.loader.systemd-boot = {
     enable = true;
@@ -142,11 +129,6 @@
 
   networking.networkmanager.enable = true;
   networking.hostName = "david";
-  # for CraneCam Pi
-  networking.firewall.allowedTCPPorts = [
-    5300
-    4317
-  ];
 
   time.timeZone = "Europe/Zurich";
 
@@ -165,20 +147,13 @@
     david = {
       initialPassword = "";
       isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA0+kwufEnqBpSbOFKApFtopfMuJEXdtN0PywDpttzRH phone"
-      ];
+      openssh.authorizedKeys.keys = [ ];
       extraGroups = [
         "wheel"
         "networkmanager"
-        "libvirtd"
-        "kvm"
       ];
     };
   };
-
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "26.05";
