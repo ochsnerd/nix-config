@@ -1,11 +1,6 @@
-# My nixos config
+# My nixos configs
 
-Build by
-
-```bash
-sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#framework
-sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#pc
-```
+Apply by the justfile
 
 ## Setup
 

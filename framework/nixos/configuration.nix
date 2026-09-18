@@ -93,17 +93,23 @@
   };
 
   environment.systemPackages = with pkgs; [
+    just
     jq
     graphviz
     htop
+
     spotify
     proton-vpn
     # deactivated because it uses unsafe electron version
-    # bitwarden-desktop
+    bitwarden-desktop
     dropbox
-    gnome-boxes
-    gnomeExtensions.tophat
+
     libreoffice-qt6-fresh
+
+    gnome-boxes
+
+    gnomeExtensions.tophat
+
     dockerfile-language-server
     yaml-language-server
 
