@@ -2,22 +2,33 @@
   programs.opencode = {
     enable = true;
     package = pkgs.opencode;
-    # TODO: As soon as home-manager exposes the tui, set scroll_speed here
-    # https://home-manager-options.extranix.com/?query=opencode
+
     settings = {
       autoshare = false;
       autoupdate = false;
     };
 
-    agents = {
-      code-reviewer = ''
-        # Code Reviewer Agent
+    tui = {
+      scroll_speed = 0.5;
+    };
+
+    skills = {
+      code-review = ''
+        ---
+        name: code-review
+        description: Review code changes
+        ---
 
         You are a senior software engineer specializing in code reviews.
         Focus on code quality, security, and maintainability.
 
-        Review changes in the current branch versus the
-        main branch. Based on the research, create report.
+        Unless specified otherwise, review changes in the
+        current branch versus the main branch.
+
+        Make sure to use `git diff main...HEAD` (three dots)
+
+        Based on the review, create a report.
+
         Do not make any changes to the code.
 
         Follow this workflow:
@@ -26,13 +37,11 @@
         2. Read code changes, give a short summary,
            include references to the files containing
            the most important changes.
-           Make sure to use `git diff main...HEAD` (three dots)
 
         3. Make short list (no more than 7 items,
            shorter is ok) of the most important
-           feedback points. Categorize them as
-           (ISSUE | SUGGESTION | UNCLEAR)
-           For each one, inlcude a reference to the
+           feedback points.
+           For each item, include a reference (<file>:<line>)to the
            code and a short explanation of the issue.
       '';
     };
