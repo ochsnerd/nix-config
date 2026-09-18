@@ -1,23 +1,33 @@
 {
   inputs = {
-    # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
-    # You can access packages and modules from different nixpkgs revs
-    # at the same time. Here's an working example:
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
 
-    # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-26.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     eca = {
       url = "github:editor-code-assistant/eca";
@@ -40,38 +50,63 @@
       self,
       nixpkgs,
       home-manager,
+      treefmt-nix,
+      deploy-rs,
+      disko,
       ...
     }@inputs:
     let
       inherit (self) outputs;
-      # Supported systems for your flake packages, shell, etc.
-      systems = [
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
-      # This is a function that generates an attribute by calling a function you
-      # pass to it, with each system as an argument
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+
+      system = "x86_64-linux";
+
+      pkgs = nixpkgs.legacyPackages.${system};
+
+      treefmtEval = treefmt-nix.lib.evalModule pkgs {
+        projectRootFile = "flake.nix";
+        programs.nixfmt.enable = true;
+        programs.shfmt.enable = true;
+        programs.prettier.enable = true;
+      };
     in
     {
-      # Your custom packages
-      # Accessible through 'nix build', 'nix shell', etc
-      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-      # Formatter for your nix files, available through 'nix fmt'
-      # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      # `nix fmt`
+      formatter.${system} = treefmtEval.config.build.wrapper;
+
+      # `nix flake check`
+      checks.${system} = {
+        # make formatting fail `nix flake check`
+        formatting = treefmtEval.config.build.check self;
+      }
+      // deploy-rs.lib.${system}.deployChecks self.deploy;
 
       overlays = import ./overlays { inherit inputs; };
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
-      # NixOS configuration entrypoint
-      # Available through 'nixos-rebuild --flake .#your-hostname'
+      # `deploy .#hetzner`
+      deploy.nodes.hetzner = {
+        hostname = "128.140.72.209";
+        profiles.system = {
+          sshUser = "david";
+          user = "root";
+          path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.hetzner;
+          magicRollback = true;
+          autoRollback = true;
+        };
+      };
+
       nixosConfigurations = {
+        hetzner = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            disko.nixosModules.disko
+            ./hetzner/nixos/configuration.nix
+          ];
+        };
         pc = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./pc/nixos/configuration.nix
@@ -79,6 +114,7 @@
           ];
         };
         framework = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./framework/nixos/configuration.nix
@@ -86,6 +122,20 @@
             ./framework/nixos/framework.nix
           ];
         };
+      };
+
+      apps.${system}.deploy = {
+        type = "app";
+        meta.description = "Deploy the hetzner node with deploy-rs";
+        program = pkgs.lib.getExe (
+          pkgs.writeShellApplication {
+            name = "deploy-hetzner";
+            runtimeInputs = [ deploy-rs.packages.${system}.default ];
+            text = ''
+              exec deploy .#hetzner "$@"
+            '';
+          }
+        );
       };
     };
 }

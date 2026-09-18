@@ -1,0 +1,37 @@
+* Server Bootstrapping
+
+Based on [[https://github.com/nix-community/nixos-anywhere]]
+
+1. Clone the example, adjust the files
+   #+begin_src shell
+     nix flake lock
+     nix run github:nix-community/nixos-anywhere -- --flake .#hetzner-cloud --vm-test
+   #+end_src
+
+2. Start a hetzner vps, with this cloud config:
+   #+begin_src yaml
+     #cloud-config
+     users:
+       - name: root
+         groups: users, admin
+         sudo: ALL=(ALL) NOPASSWD:ALL
+         shell: /bin/bash
+         ssh_authorized_keys:
+           - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGy9ZdCyw3Pwd5snef5C0U2izIjEfYrKxQUBHODaPigO
+   #+end_src
+
+3. In the hetzner console, note the ip and boot the vm into the rescue system
+
+4. Add to `.ssh/config`
+   #+begin_src
+   Host hetzner
+       HostName <ip>
+       User root
+       IdentityFile ~/.ssh/<key used for vm>
+       StrictHostKeyChecking no
+   #+end_src
+
+5. Install nixos
+   #+begin_src shell
+     nix run github:nix-community/nixos-anywhere -- --flake .#hetzner-cloud --target-host root@<ip> -i <path to ssh key>
+   #+end_src

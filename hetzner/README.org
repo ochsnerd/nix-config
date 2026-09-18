@@ -1,0 +1,16 @@
+* Server
+
+Deploy new configuration:
+
+#+begin_src shell
+  nix run .#deploy
+#+end_src
+
+** Next steps
+*** put this on gh
+*** do a proper flake with home manager
+*** what to do on the server
+- syncthing
+- dev env for phone?
+*** as soon as there is some non-trivial data: backups?
+
