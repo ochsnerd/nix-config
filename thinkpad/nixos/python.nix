@@ -1,0 +1,13 @@
+# see https://nixos.org/manual/nixpkgs/stable/#reference
+{ pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+    (python3.withPackages (
+      ps: with ps; [
+        black
+        pygments # syntax highlighting for orgmode latex export
+      ]
+    ))
+    pkgs.pyright
+  ];
+}

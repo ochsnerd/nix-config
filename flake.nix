@@ -79,24 +79,24 @@
         pc = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/configuration.nix
-            ./nixos/hardware-configuration-pc.nix
-            ./nixos/pc.nix
+            ./pc/nixos/configuration.nix
+            ./pc/nixos/hardware-configuration.nix
+            ./pc/nixos/pc.nix
           ];
         };
-        laptop = nixpkgs.lib.nixosSystem {
+        thinkpad = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/configuration.nix
-            ./nixos/hardware-configuration-thinkpad.nix
+            ./thinkpad/nixos/configuration.nix
+            ./thinkpad/nixos/hardware-configuration.nix
           ];
         };
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/configuration.nix
-            ./nixos/hardware-configuration-framework.nix
-            ./nixos/framework.nix
+            ./framework/nixos/configuration.nix
+            ./framework/nixos/hardware-configuration.nix
+            ./framework/nixos/framework.nix
           ];
         };
       };
