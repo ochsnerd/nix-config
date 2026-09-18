@@ -47,6 +47,7 @@ install stuff for testing.
 #+end_src
 
 ** quelpa
+
 #+begin_src emacs-lisp
  (use-package quelpa-use-package)
 #+end_src
@@ -103,6 +104,7 @@ Write backups to ~/tmp~.
 #+end_src
 
 * Completion
+
 ** vertico
 
 #+begin_src emacs-lisp
@@ -141,6 +143,7 @@ Write backups to ~/tmp~.
 #+end_src
 
 ** orderless
+
 This is from the vertico readme
 
 #+begin_src emacs-lisp
@@ -356,6 +359,7 @@ From doom-emacs
 #+end_src
 
 * Ergonomics
+
 ** which-key
 
 #+begin_src emacs-lisp
@@ -379,6 +383,7 @@ From doom-emacs
 #+end_src
 
 * Keybindings
+
 ** evil
 
 #+begin_src emacs-lisp
@@ -483,6 +488,7 @@ short keybindings in limited contexts
 - https://github.com/skyler544/rex/blob/main/config/rex-keybinds.el
 
 * Projects
+
 ** projectile
 
 #+begin_src emacs-lisp
@@ -531,6 +537,7 @@ Start via ~setsid~ to not have the ghostty window as a child process of emacs.
 #+end_src
 
 * Version control
+
 ** magit
 
 #+begin_src emacs-lisp
@@ -922,11 +929,13 @@ sequenceDiagram
 * Various
 
 ** http server
+
 #+begin_src emacs-lisp
   (use-package simple-httpd)
 #+end_src
 
 ** stuff
+
 #+begin_src emacs-lisp
   (defun my/open-stuff ()
     "Open stuff.org in a new buffer."
