@@ -519,16 +519,15 @@ Required for ~projectile-ripgrep~ to work.
 
 ** workspace
 
-Starting a workspace (see [[../shell.nix]]) in a terminal window
+Starting a workspace (see [[file:shell.nix]]) in a ghostty window.
+Start via ~setsid~ to not have the ghostty window as a child process of emacs.
 
 #+begin_src emacs-lisp
   (defun my/workspace-start ()
-  "Launch a Ghostty window and run workspace-start in the current directory."
-  (interactive)
-  (start-process "ghostty-workspace"
-                 nil ; Do not attach an Emacs buffer to this process
-                 "ghostty"
-                 "-e" "fish" "-C" "workspace-start"))
+    "Launch a Ghostty window as a detached process and run workspace-start in the current directory."
+    (interactive)
+    (call-process "setsid" nil 0 nil "--fork"
+  		 "ghostty" "-e" "fish" "-C" "workspace-start"))
 #+end_src
 
 * Version control
