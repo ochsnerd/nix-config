@@ -7,8 +7,7 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -22,11 +21,11 @@
     ./firefox.nix
     ./chrome.nix
     ./desktop.nix
-    (import ./dropbox.nix { inherit pkgs; })
-    (import ./vscode.nix { inherit pkgs; })
-    (import ./emacs.nix { inherit pkgs; })
-    (import ./agents.nix { inherit pkgs; })
-    (import ./gpg.nix { inherit pkgs; })
+    ./dropbox.nix
+    ./vscode.nix
+    ./emacs.nix
+    ./agents.nix
+    ./gpg.nix
   ];
 
   home = {

@@ -1,5 +1,4 @@
-{ pkgs }:
-{
+{ pkgs, ... }: {
   systemd.user.services.dropbox = {
     Unit = {
       Description = "Dropbox service";
