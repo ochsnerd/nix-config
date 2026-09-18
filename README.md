@@ -4,11 +4,12 @@ Build by
 
 ```bash
 sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#framework
-sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#laptop
 sudo nixos-rebuild switch --flake ~/<path-to-this-repo>#pc
 ```
 
 ## Setup
+
+(note that this might be done more elegantly with nix-anywhere or something)
 
 1. `nix-shell -p git vim`
 2. git clone this

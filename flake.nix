@@ -64,13 +64,8 @@
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-      # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
-      # Reusable nixos modules you might want to export
-      # These are usually stuff you would upstream into nixpkgs
       nixosModules = import ./modules/nixos;
-      # Reusable home-manager modules you might want to export
-      # These are usually stuff you would upstream into home-manager
       homeManagerModules = import ./modules/home-manager;
 
       # NixOS configuration entrypoint
@@ -82,13 +77,6 @@
             ./pc/nixos/configuration.nix
             ./pc/nixos/hardware-configuration.nix
             ./pc/nixos/pc.nix
-          ];
-        };
-        thinkpad = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./thinkpad/nixos/configuration.nix
-            ./thinkpad/nixos/hardware-configuration.nix
           ];
         };
         framework = nixpkgs.lib.nixosSystem {
