@@ -96,6 +96,7 @@
           modules = [
             ./nixos/configuration.nix
             ./nixos/hardware-configuration-framework.nix
+            ./nixos/framework.nix
           ];
         };
       };
