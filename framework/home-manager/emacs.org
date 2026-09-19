@@ -548,6 +548,40 @@ Start via ~setsid~ to not have the ghostty window as a child process of emacs.
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
 
+** git-sync
+
+When a repo has a script ~git-sync.sh~ (https://github.com/simonthum/git-sync) in it's root, call it on save. Call it explicitly with bash because the
+shebang does not seem to work if it's invoked via emacs on termux.
+
+#+begin_src emacs-lisp
+  (require 'vc-git)
+
+  (defun my/git-sync-buffer (&optional buffer)
+    "Run `bash git-sync.sh -ns` at the repo root if BUFFER visits a git-tracked file."
+    (interactive)
+    (when-let* ((file (buffer-file-name (or buffer (current-buffer))))
+  	      (root (vc-git-root file))
+  	      (script (expand-file-name "git-sync.sh" root))
+  	      ((file-exists-p script))
+  	      ((not (string-prefix-p (expand-file-name ".git/" root)
+  				     (expand-file-name file))))
+  	      ((not (process-live-p (get-process "git-sync")))))
+
+      (let ((default-directory root))
+        (make-process
+         :name "git-sync"
+         :buffer "*git-sync*"
+         :command (list "bash" (file-local-name script) "-ns")
+         :file-handler t
+         :sentinel (lambda (proc _event)
+  		   (unless (or (process-live-p proc)
+  			       (zerop (process-exit-status proc)))
+  		     (message "git-sync failed (%d)"
+  			      (process-exit-status proc))))))))
+
+  (add-hook 'after-save-hook #'my/git-sync-buffer)
+#+end_src
+
 * Programming
 
 ** treesit-auto
