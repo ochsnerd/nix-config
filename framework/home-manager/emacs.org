@@ -103,6 +103,12 @@ Write backups to ~/tmp~.
 	`((".*" . ,temporary-file-directory)))
 #+end_src
 
+** auto revert
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+#+end_src
+
 * Completion
 
 ** vertico
