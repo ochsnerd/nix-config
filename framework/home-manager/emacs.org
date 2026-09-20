@@ -924,7 +924,6 @@ Share the daily-directory with roam on my phone.
   (use-package org-roam
     :custom
     (org-roam-directory (file-truename "~/org/roam"))
-    (org-roam-dailies-directory (file-truename "~/Dropbox/DropsyncFiles/roam/daily/"))
     (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     :config
 
@@ -966,13 +965,4 @@ sequenceDiagram
 
 #+begin_src emacs-lisp
   (use-package simple-httpd)
-#+end_src
-
-** stuff
-
-#+begin_src emacs-lisp
-  (defun my/open-stuff ()
-    "Open stuff.org in a new buffer."
-    (interactive)
-  (find-file "~/Dropbox/DropsyncFiles/stuff.org"))
 #+end_src
