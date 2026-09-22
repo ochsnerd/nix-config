@@ -588,6 +588,27 @@ shebang does not seem to work if it's invoked via emacs on termux.
   (add-hook 'after-save-hook #'my/git-sync-buffer)
 #+end_src
 
+** diff-hl
+
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :hook
+    ((after-init . global-diff-hl-mode)
+     (magit-pre-refresh . diff-hl-magit-pre-refresh)
+     (magit-post-refresh . diff-hl-magit-post-refresh))
+    :custom
+    (diff-hl-disable-on-remote t)
+    (diff-hl-draw-borders nil)
+    :config
+    (diff-hl-flydiff-mode 1))
+#+end_src
+
+draw the left fringe thinly.
+
+#+begin_src emacs-lisp
+  (fringe-mode '(2 . 8))
+#+end_src
+
 * Programming
 
 ** treesit-auto
