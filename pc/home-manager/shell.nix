@@ -136,7 +136,8 @@
           end
           set -l session (__workspace_session_name $root $name)
           pushd $wsdir
-          zellij attach --create $session options --default-layout $root/layout.kdl
+          zellij delete-session $session 2>/dev/null
+          zellij --new-session-with-layout $root/layout.kdl --session $session
           set -l rc $status
           popd
           return $rc
