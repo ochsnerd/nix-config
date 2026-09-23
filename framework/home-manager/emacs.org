@@ -1010,7 +1010,7 @@ Share the daily-directory with roam on my phone.
 
     (defvar my/org-roam-daily-head
       (concat "#+title: %<%Y-%m-%d>\n"
-              "* [0/0] Tasks\n"
+              "* Tasks\n"
               "* Journal\n"
               "* Refile\n"))
 
