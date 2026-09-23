@@ -556,34 +556,88 @@ Start via ~setsid~ to not have the ghostty window as a child process of emacs.
 
 ** git-sync
 
-When a repo has a script ~git-sync.sh~ (https://github.com/simonthum/git-sync) in it's root, call it on save. Call it explicitly with bash because the
-shebang does not seem to work if it's invoked via emacs on termux.
+When a repo has a script ~git-sync.sh~ (https://github.com/simonthum/git-sync) in it's root, call it on save.
+Call it explicitly with bash because the shebang does not seem to work if it's invoked via emacs on termux.
+Debounce the sync at every save to prevent too many commits piling up.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :lexical t
   (require 'vc-git)
 
-  (defun my/git-sync-buffer (&optional buffer)
-    "Run `bash git-sync.sh -ns` at the repo root if BUFFER visits a git-tracked file."
-    (interactive)
+  (defcustom my/git-sync-delay 500
+    "Seconds of save-inactivity before running git-sync."
+    :type 'integer)
+
+  (defvar my/git-sync--timers (make-hash-table :test #'equal)
+    "Pending git-sync timers, keyed by repo root.")
+
+  (defvar my/git-sync--procs (make-hash-table :test #'equal)
+    "Running git-sync processes, keyed by repo root.")
+
+  (defun my/git-sync--cancel (root)
+    "Cancel any pending git-sync timer for ROOT."
+    (when-let* ((old (gethash root my/git-sync--timers)))
+      (cancel-timer old))
+    (remhash root my/git-sync--timers))
+
+  (defun my/git-sync--schedule (root &optional delay)
+    "(Re)start the debounce timer for ROOT."
+    (my/git-sync--cancel root)
+    (puthash root
+  	   (run-with-timer (or delay my/git-sync-delay) nil
+  			   #'my/git-sync--run root)
+  	   my/git-sync--timers))
+
+  (defun my/git-sync--sentinel (proc _event)
+    (when (memq (process-status proc) '(exit signal))
+      (let ((root (process-get proc 'root)))
+        (remhash root my/git-sync--procs)
+        (unless (zerop (process-exit-status proc))
+  	(message "git-sync failed (%d) in %s; see %s"
+  		 (process-exit-status proc) root
+  		 (buffer-name (process-buffer proc)))))))
+
+  (defun my/git-sync--run (root)
+    "Run git-sync.sh in ROOT now, or retry shortly if one is already running."
+    (my/git-sync--cancel root)
+    (let ((script (expand-file-name "git-sync.sh" root)))
+      (cond
+       ((process-live-p (gethash root my/git-sync--procs))
+        (my/git-sync--schedule root 30))
+       ((file-exists-p script)
+        (let* ((default-directory root)
+  	     (process-environment
+  	      (cons "GIT_TERMINAL_PROMPT=0" process-environment))
+  	     (name (concat "git-sync:" root))
+  	     (buf (get-buffer-create (format "*%s*" name))))
+  	(with-current-buffer buf
+  	  (goto-char (point-max))
+  	  (insert (format "\n--- %s ---\n" (current-time-string))))
+  	(let ((proc (make-process
+  		     :name name
+  		     :buffer buf
+  		     :command (list "bash" (file-local-name script) "-ns")
+  		     :connection-type 'pipe
+  		     :file-handler t
+  		     :sentinel #'my/git-sync--sentinel)))
+  	  (process-put proc 'root root)
+  	  (puthash root proc my/git-sync--procs)))))))
+
+  (defun my/git-sync-buffer (&optional buffer now)
+    "Schedule `bash git-sync.sh -ns' at the repo root of BUFFER's file.
+  Runs after `my/git-sync-delay' seconds without further saves.
+  Interactively, with a prefix argument, run immediately."
+    (interactive (list nil current-prefix-arg))
     (when-let* ((file (buffer-file-name (or buffer (current-buffer))))
   	      (root (vc-git-root file))
-  	      (script (expand-file-name "git-sync.sh" root))
-  	      ((file-exists-p script))
-  	      ((not (string-prefix-p (expand-file-name ".git/" root)
-  				     (expand-file-name file))))
-  	      ((not (process-live-p (get-process "git-sync")))))
-
-      (let ((default-directory root))
-        (make-process
-         :name "git-sync"
-         :buffer "*git-sync*"
-         :command (list "bash" (file-local-name script) "-ns")
-         :file-handler t
-         :sentinel (lambda (proc _event)
-  		   (unless (or (process-live-p proc)
-  			       (zerop (process-exit-status proc)))
-  		     (message "git-sync failed (%d)"
-  			      (process-exit-status proc))))))))
+  	      (root (expand-file-name root))
+  	      ((file-exists-p (expand-file-name "git-sync.sh" root)))
+  	      (git-dir (file-name-as-directory (expand-file-name ".git" root)))
+  	      ((not (string-prefix-p git-dir (expand-file-name file)))))
+      (if now
+  	(my/git-sync--run root)
+        (my/git-sync--schedule root)
+        (when (called-interactively-p 'interactive)
+  	(message "git-sync scheduled in %ds" my/git-sync-delay)))))
 
   (add-hook 'after-save-hook #'my/git-sync-buffer)
 #+end_src
