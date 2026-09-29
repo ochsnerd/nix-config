@@ -98,13 +98,8 @@
     graphviz
     htop
 
-    spotify
     proton-vpn
-    # deactivated because it uses unsafe electron version
     bitwarden-desktop
-    dropbox
-
-    libreoffice-qt6-fresh
 
     gnome-boxes
 
@@ -124,8 +119,6 @@
     enable = true;
     setSocketVariable = true;
   };
-
-  programs.steam.enable = true;
 
   programs.nix-index-database.comma.enable = true;
 
