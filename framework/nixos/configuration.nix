@@ -122,6 +122,8 @@
 
   programs.nix-index-database.comma.enable = true;
 
+  programs.nix-ld.enable = true;
+
   virtualisation.libvirtd.enable = true;
   boot.kernelModules = [
     "kvm-amd"
