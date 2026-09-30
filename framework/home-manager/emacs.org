@@ -3,8 +3,9 @@
 
 * How this works
 
-- This file is picked up by [[https://github.com/nix-community/emacs-overlay][emacs overlay]] and scanned for ~use-package-forms~.
-- The required packages are installed.
+- This file is picked up by [[https://github.com/nix-community/emacs-overlay][emacs overlay]] and parsed/tangled scanned for ~use-package~-forms
+  (https://raw.githubusercontent.com/nix-community/emacs-overlay/master/elisp.nix).
+- The required packages are added to the closure
 - The tangled blocks are byte-compiled and written to ~/nix/store/...-emacs-default-0.1.0~,
   which is then loaded magically by emacs.
 
@@ -101,6 +102,23 @@ Write backups to ~/tmp~.
 
 #+begin_src emacs-lisp
   (global-auto-revert-mode 1)
+#+end_src
+
+** winner
+
+Also used by [[ediff]]
+
+#+begin_src emacs-lisp
+  (use-package winner
+    :ensure nil
+    :after (evil general)
+    :demand t
+    :config
+    (winner-mode 1)
+    (general-define-key
+     :keymaps 'evil-window-map
+     "u" #'winner-undo
+     "r" #'winner-redo))
 #+end_src
 
 * Completion
@@ -357,6 +375,7 @@ TODO: rune/evil-hook?
 
 #+begin_src emacs-lisp
   (use-package evil
+    :demand t
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
@@ -391,6 +410,9 @@ TODO: rune/evil-hook?
 short keybindings in limited contexts
 
 ** general
+
+Note: the nix-emacs-overlay expands ~use-package~ with a plain emacs.
+This means ~:general~ (in other ~use-package~) does not work and silently drops the whole package.
 
 #+begin_src emacs-lisp
   (use-package general
@@ -617,6 +639,20 @@ draw the left fringe thinly.
 
 #+begin_src emacs-lisp
   (fringe-mode '(2 . 8))
+#+end_src
+
+** ediff
+
+Keep the ediff control-panel in the same window, restore after ending with [[winner]]
+
+#+begin_src emacs-lisp
+  (use-package ediff
+    :ensure nil
+    :custom
+    (ediff-window-setup-function #'ediff-setup-windows-plain)
+    (ediff-split-window-function #'split-window-horizontally)
+    :config
+    (add-hook 'ediff-after-quit-hook-internal #'winner-undo))
 #+end_src
 
 * Programming
