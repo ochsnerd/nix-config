@@ -535,9 +535,9 @@ Start via ~setsid~ to not have the ghostty window as a child process of emacs.
 
 ** git-sync
 
-When a repo has a script ~git-sync.sh~ (https://github.com/simonthum/git-sync) in it's root, call it on save.
+When a repo has a script ~git-sync.sh~ (https://github.com/simonthum/git-sync) in it's root, schedule calling it on save. Debounce the sync to prevent too many commits piling up.
+
 Call it explicitly with bash because the shebang does not seem to work if it's invoked via emacs on termux.
-Debounce the sync at every save to prevent too many commits piling up.
 
 #+begin_src emacs-lisp :lexical t
   (require 'vc-git)
@@ -601,24 +601,36 @@ Debounce the sync at every save to prevent too many commits piling up.
   	  (process-put proc 'root root)
   	  (puthash root proc my/git-sync--procs)))))))
 
-  (defun my/git-sync-buffer (&optional buffer now)
-    "Schedule `bash git-sync.sh -ns' at the repo root of BUFFER's file.
-  Runs after `my/git-sync-delay' seconds without further saves.
-  Interactively, with a prefix argument, run immediately."
-    (interactive (list nil current-prefix-arg))
+  (defun my/git-sync--buffer-root (&optional buffer)
+    "Return the repo root of BUFFER's file if it should be git-synced."
     (when-let* ((file (buffer-file-name (or buffer (current-buffer))))
   	      (root (vc-git-root file))
   	      (root (expand-file-name root))
   	      ((file-exists-p (expand-file-name "git-sync.sh" root)))
   	      (git-dir (file-name-as-directory (expand-file-name ".git" root)))
   	      ((not (string-prefix-p git-dir (expand-file-name file)))))
-      (if now
-  	(my/git-sync--run root)
-        (my/git-sync--schedule root)
-        (when (called-interactively-p 'interactive)
-  	(message "git-sync scheduled in %ds" my/git-sync-delay)))))
+      root))
 
-  (add-hook 'after-save-hook #'my/git-sync-buffer)
+  (defun my/git-sync--buffer-schedule (&optional buffer)
+    "Schedule `bash git-sync.sh -ns' at the repo root of BUFFER's file.
+  Runs after `my/git-sync-delay' seconds without further saves."
+    (when-let* ((root (my/git-sync--buffer-root buffer)))
+      (my/git-sync--schedule root)))
+
+  (defun my/git-sync--buffer-now (&optional buffer)
+    "Run `bash git-sync.sh -ns' at the repo root of BUFFER's file immediately."
+    (when-let* ((root (my/git-sync--buffer-root buffer)))
+      (my/git-sync--run root)))
+
+  (defun my/git-sync-buffer (&optional buffer)
+    "Run git-sync in BUFFER's repo, immediately by default.
+  With a prefix argument, schedule it instead."
+    (interactive)
+    (if current-prefix-arg
+        (my/git-sync--buffer-schedule buffer)
+      (my/git-sync--buffer-now buffer)))
+
+  (add-hook 'after-save-hook #'my/git-sync--buffer-schedule)
 #+end_src
 
 ** diff-hl
