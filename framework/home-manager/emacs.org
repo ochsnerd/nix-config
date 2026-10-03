@@ -382,6 +382,8 @@ TODO: rune/evil-hook?
     (setq evil-want-C-u-scroll t)
     (setq evil-want-C-u-delete t)
     (setq evil-want-C-i-jump nil)
+    (setq evil-undo-system 'undo-redo)
+    (setq evil-want-fine-undo t)
     ;; :hook
     ;; (evil-mode . rune/evil-hook)
     :config
