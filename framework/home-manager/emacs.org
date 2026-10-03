@@ -1012,12 +1012,14 @@ Share the daily-directory with roam on my phone.
     (org-roam-directory (file-truename "~/org/roam"))
     (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     :config
-
     (defvar my/org-roam-daily-head
-      (concat "#+title: %<%Y-%m-%d>\n"
-              "* Tasks\n"
-              "* Journal\n"
-              "* Refile\n"))
+      (concat ":PROPERTIES:\n"
+  	    ":ID:       daily-%<%Y-%m-%d>\n"
+  	    ":END:\n"
+  	    "#+title: %<%Y-%m-%d>\n"
+  	    "* Tasks\n"
+  	    "* Journal\n"
+  	    "* Refile\n"))
 
     (setq org-roam-dailies-capture-templates
   	`(("d" "default" entry "* %?"
