@@ -490,6 +490,7 @@ This means ~:general~ (in other ~use-package~) does not work and silently drops 
      :keymaps 'override
      :prefix "SPC"
      :non-normal-prefix "C-SPC"
+
      "w" 'evil-window-map
      "h" 'help-command
 
@@ -500,6 +501,7 @@ This means ~:general~ (in other ~use-package~) does not work and silently drops 
 
      "u" #'universal-argument
 
+     "g" '(:ignore t :which-key "magit")
      "gg" #'magit
      "gb" #'magit-blame
 
@@ -522,17 +524,18 @@ This means ~:general~ (in other ~use-package~) does not work and silently drops 
      "nrf" #'org-roam-node-find
      "nri" #'org-roam-node-insert
      "nrt" #'org-roam-tag-add
-     "nd" '(:ignore t :which-key "org-roam-dailies")
-     "ndd" #'org-roam-dailies-capture-today
-     "ndt" #'org-roam-dailies-capture-tomorrow
-     "ndy" #'org-roam-dailies-capture-yesterday
-     "ndD" #'org-roam-dailies-goto-today
-     "ndT" #'org-roam-dailies-goto-tomorrow
-     "ndY" #'org-roam-dailies-goto-yesterday
-     "ndc" #'org-roam-dailies-goto-date
 
+     "d" '(:ignore t :which-key "org-roam-dailies")
+     "dd" #'org-roam-dailies-capture-today
+     "dt" #'org-roam-dailies-capture-tomorrow
+     "dc" #'org-roam-dailies-capture-date
+     "dD" #'org-roam-dailies-goto-today
+     "dT" #'org-roam-dailies-goto-tomorrow
+     "dY" #'org-roam-dailies-goto-yesterday
+     "dC" #'org-roam-dailies-goto-date
+
+     "m" '(:ignore t :which-key "markdown")
      "mp" #'markdown-toggle-markup-hiding
-
      
      "p" '(:ignore t :which-key "gptel")
      "pp" #'gptel
