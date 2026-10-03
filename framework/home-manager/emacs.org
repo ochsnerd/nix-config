@@ -380,6 +380,7 @@ TODO: rune/evil-hook?
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-u-delete t)
     (setq evil-want-C-i-jump nil)
     ;; :hook
     ;; (evil-mode . rune/evil-hook)
@@ -388,7 +389,7 @@ TODO: rune/evil-hook?
     (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
     (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-    ;; Use viual line motions outside of visual-line-mode buffers
+    ;; Use visual line motions outside of visual-line-mode buffers
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
@@ -426,44 +427,44 @@ This means ~:general~ (in other ~use-package~) does not work and silently drops 
      "w" 'evil-window-map
      "h" 'help-command
 
-     "." 'find-file
-     "," 'consult-buffer
+     "." #'find-file
+     "," #'consult-buffer
 
      "SPC" 'projectile-command-map
 
-     "s" 'my/open-stuff
+     "u" #'universal-argument
 
-     "gg" 'magit
-     "gb" 'magit-blame
+     "gg" #'magit
+     "gb" #'magit-blame
 
-     "cC" 'eglot
-     "ca" 'eglot-code-actions
-     "cc" 'compile
-     "cf" 'eglot-format-buffer
-     "cr" 'eglot-rename
-     "cm" 'imenu
-     "cd" 'xref-find-definitions
-     "cD" 'xref-find-references
-     "cs" 'eldoc
+     "cC" #'eglot
+     "ca" #'eglot-code-actions
+     "cc" #'compile
+     "cf" #'eglot-format-buffer
+     "cr" #'eglot-rename
+     "cm" #'imenu
+     "cd" #'xref-find-definitions
+     "cD" #'xref-find-references
+     "cs" #'eldoc
 
-     "ni"  'org-insert-structure-template
-     "no"  'org-open-at-point
-     "nt"  'org-timestamp-inactive
-     "nrf" 'org-roam-node-find
-     "nri" 'org-roam-node-insert
-     "nrt" 'org-roam-tag-add
-     "nrdd" 'org-roam-dailies-capture-today
-     "nrdt" 'org-roam-dailies-capture-tomorrow
-     "nrdy" 'org-roam-dailies-capture-yesterday
-     "nrdD" 'org-roam-dailies-goto-today
-     "nrdT" 'org-roam-dailies-goto-tomorrow
-     "nrdY" 'org-roam-dailies-goto-yesterday
-     "nrdc" 'org-roam-dailies-goto-date
+     "ni"   #'org-insert-structure-template
+     "no"   #'org-open-at-point
+     "nt"   #'org-timestamp-inactive
+     "nrf"  #'org-roam-node-find
+     "nri"  #'org-roam-node-insert
+     "nrt"  #'org-roam-tag-add
+     "nrdd" #'org-roam-dailies-capture-today
+     "nrdt" #'org-roam-dailies-capture-tomorrow
+     "nrdy" #'org-roam-dailies-capture-yesterday
+     "nrdD" #'org-roam-dailies-goto-today
+     "nrdT" #'org-roam-dailies-goto-tomorrow
+     "nrdY" #'org-roam-dailies-goto-yesterday
+     "nrdc" #'org-roam-dailies-goto-date
 
-     "mp" 'markdown-toggle-markup-hiding
+     "mp" #'markdown-toggle-markup-hiding
 
-     "pp" 'gptel-send
-     "pm" 'gptel-menu))
+     "pp" #'gptel-send
+     "pm" #'gptel-menu))
 #+end_src
 
 *** Examples
