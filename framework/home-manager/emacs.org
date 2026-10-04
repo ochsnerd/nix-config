@@ -214,22 +214,86 @@ Annotations in the minibuffer completions.
 
 ** gptel
 
+*** TODO Properly select openrouter (glm latest)
+
 See capabilities https://github.com/karthink/gptel.
 
-Precondition: an anthropic api-key in =~/anthropic.key=
+Precondition: keys in authinfo.
+
+Basic idea:
+- Select text, ~SPC p s~ sends it as a prompt
+- Select text, ~SPC p r~ sends it as a rewrite request
+- Anywhere, ~SPC p p~ opens a new gptel buffer
+  - inside it, ~SPC p m~ opens the menu to customize
+  - inside a conversation, the org-heading-path to root is the conversation history,
+    sibling headings mean conversation-tree branching
+  - when inside a conversation, ~SPC p w~ prompts for a conversation name and saves it into ~~/gptel/<conv-name.ai.org~
+- opening a ~*.ai.org~ file enables ~gptel-mode~, which stores settings in drawers, making conversations 'reproducible'
 
 #+begin_src elisp
   (use-package gptel
+    :preface
+    (defvar my/gptel-conversations-directory "~/gptel"
+      "Directory for saving gptel conversation files.")
+
+    (defun my/gptel-save-conversation (name)
+      "Save current gptel buffer to NAME.ai.org in `my/ai-conversations-directory'."
+      (interactive "sConversation name: ")
+      (let ((filepath (expand-file-name (concat name ".ai.org")
+  				      my/gptel-conversations-directory)))
+        (make-directory my/gptel-conversations-directory t)
+        (if (derived-mode-p 'org-mode)
+  	  (progn (gptel-mode 1)
+  		 (write-file filepath))
+  	(let ((content (buffer-string)))
+  	  (find-file filepath)
+  	  (erase-buffer)
+  	  (insert content)
+  	  (gptel-mode 1)
+  	  (save-buffer)))))
+
+    (defun my/gptel-ai-org-mode ()
+      "Major mode for .ai.org files: `org-mode' with `gptel-mode' enabled."
+      (org-mode)
+      (gptel-mode 1))
+
+    :mode ("\\.ai\\.org\\'" . my/gptel-ai-org-mode)
+
+    :custom
+    (gptel-default-mode 'org-mode)
+    (gptel-org-branching-context t)
+
     :config
-    (defun read-key ()
-      (with-temp-buffer
-        (insert-file-contents (expand-file-name "~/anthropic.key"))
-        (string-trim (buffer-string))))
+    (setq my/gptel-openrouter
+  	(gptel-make-openai "OpenRouter"
+  	  :host "openrouter.ai"
+  	  :endpoint "/api/v1/chat/completions"
+  	  :stream t
+  	  :key gptel-api-key))
+    
+    (setq my/gptel-claude
+  	  (gptel-make-anthropic "Claude"
+  	    :stream t
+  	    :key gptel-api-key
+  	    ;; manually set models - upstream does not have the new ones yet
+  	    :models '((claude-opus-5-5
+  		       :description "Opus 5.5"
+  		       :capabilities (media tool-use cache)
+  		       :mime-types ("image/jpeg" "image/png" "image/gif"
+  				    "image/webp" "application/pdf"))
+  		      (claude-sonnet-5-5
+  		       :description "Sonnet 5.5"
+  		       :capabilities (media tool-use cache)
+  		       :mime-types ("image/jpeg" "image/png" "image/gif"
+  				    "image/webp" "application/pdf")))))
 
-    (gptel-make-anthropic "Claude" :stream t :key #'read-key)
+    (setq gptel-model 'claude-sonnet-5-5 ;; get list of models by 'gptel-menu' -> -m
+  	gptel-backend my/gptel-claude
+  	gptel-default-mode 'org-mode)
 
-    (setq gptel-model 'claude-opus-4-5-20251101 ;; get list of models by 'gptel-menu' -> -m
-          gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-key)))
+    ;; markers, necessary to have branching conversations
+    (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n"
+  	(alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
 #+end_src
 
 * Visual changes
@@ -439,6 +503,7 @@ This means ~:general~ (in other ~use-package~) does not work and silently drops 
      "gg" #'magit
      "gb" #'magit-blame
 
+     "c" '(:ignore t :which-key "code")
      "cC" #'eglot
      "ca" #'eglot-code-actions
      "cc" #'compile
@@ -449,23 +514,31 @@ This means ~:general~ (in other ~use-package~) does not work and silently drops 
      "cD" #'xref-find-references
      "cs" #'eldoc
 
-     "ni"   #'org-insert-structure-template
-     "no"   #'org-open-at-point
-     "nt"   #'org-timestamp-inactive
-     "nrf"  #'org-roam-node-find
-     "nri"  #'org-roam-node-insert
-     "nrt"  #'org-roam-tag-add
-     "nrdd" #'org-roam-dailies-capture-today
-     "nrdt" #'org-roam-dailies-capture-tomorrow
-     "nrdy" #'org-roam-dailies-capture-yesterday
-     "nrdD" #'org-roam-dailies-goto-today
-     "nrdT" #'org-roam-dailies-goto-tomorrow
-     "nrdY" #'org-roam-dailies-goto-yesterday
-     "nrdc" #'org-roam-dailies-goto-date
+     "n" '(:ignore t :which-key "org")
+     "ni" #'org-insert-structure-template
+     "no" #'org-open-at-point
+     "nt" #'org-timestamp-inactive
+     "nr" '(:ignore t :which-key "org-roam")
+     "nrf" #'org-roam-node-find
+     "nri" #'org-roam-node-insert
+     "nrt" #'org-roam-tag-add
+     "nd" '(:ignore t :which-key "org-roam-dailies")
+     "ndd" #'org-roam-dailies-capture-today
+     "ndt" #'org-roam-dailies-capture-tomorrow
+     "ndy" #'org-roam-dailies-capture-yesterday
+     "ndD" #'org-roam-dailies-goto-today
+     "ndT" #'org-roam-dailies-goto-tomorrow
+     "ndY" #'org-roam-dailies-goto-yesterday
+     "ndc" #'org-roam-dailies-goto-date
 
      "mp" #'markdown-toggle-markup-hiding
 
-     "pp" #'gptel-send
+     
+     "p" '(:ignore t :which-key "gptel")
+     "pp" #'gptel
+     "ps" #'gptel-send
+     "pw" #'my/gptel-save-conversation
+     "pr" #'gptel-rewrite
      "pm" #'gptel-menu))
 #+end_src
 
@@ -871,6 +944,8 @@ Used for editing markdown files, also formatting (e.g. types) in the echo-area.
                 ("C-c C-c"   . markdown-do))
     :hook ((markdown-mode . visual-line-mode)))
 #+end_src
+
+Version 2.9 should also align tables correctly.
 
 ** yaml
 
