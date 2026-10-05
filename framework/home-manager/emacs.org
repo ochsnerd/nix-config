@@ -214,8 +214,6 @@ Annotations in the minibuffer completions.
 
 ** gptel
 
-*** TODO Properly select openrouter (glm latest)
-
 See capabilities https://github.com/karthink/gptel.
 
 Precondition: keys in authinfo.
@@ -269,27 +267,67 @@ Basic idea:
   	  :host "openrouter.ai"
   	  :endpoint "/api/v1/chat/completions"
   	  :stream t
-  	  :key gptel-api-key))
-    
+  	  :key gptel-api-key
+  	  ;; data from https://openrouter.ai/api/v1/models
+  	  :models '((~z-ai/glm-latest
+  		     :description "Z.ai's latest GLM, auto-updating (text-only)"
+  		     :capabilities (tool-use json)
+  		     :context-window 1048 ; 1,048,576
+  		     :input-cost 0.03
+  		     :output-cost 12)
+  		    (~z-ai/glm-flash-latest
+  		     :description "Z.ai's fast, cheap GLM, auto-updating"
+  		     :capabilities (media tool-use json)
+  		     :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+  		     :context-window 1048 ; 1,048,576
+  		     :input-cost 0.0352
+  		     :output-cost 0.5)
+  		    (openai/gpt-6.1-sol
+  		     :description "Faster, more cost-efficient version of GPT-6"
+  		     :capabilities (media tool-use json)
+  		     :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+  		     :context-window 1050 ; 1,050,000
+  		     :input-cost 2
+  		     :output-cost 10
+  		     :cutoff-date "2026-04")
+  		    (openai/gpt-6-astra
+  		     :description "The best model for coding and agentic tasks"
+  		     :capabilities (media tool-use json)
+  		     :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+  		     :context-window 1050 ; 1,050,000
+  		     :input-cost 10
+  		     :output-cost 50
+  		     :cutoff-date "2026-04"))))
+
     (setq my/gptel-claude
-  	  (gptel-make-anthropic "Claude"
-  	    :stream t
-  	    :key gptel-api-key
-  	    ;; manually set models - upstream does not have the new ones yet
-  	    :models '((claude-opus-5-5
-  		       :description "Opus 5.5"
-  		       :capabilities (media tool-use cache)
-  		       :mime-types ("image/jpeg" "image/png" "image/gif"
-  				    "image/webp" "application/pdf"))
-  		      (claude-sonnet-5-5
-  		       :description "Sonnet 5.5"
-  		       :capabilities (media tool-use cache)
-  		       :mime-types ("image/jpeg" "image/png" "image/gif"
-  				    "image/webp" "application/pdf")))))
+  	(gptel-make-anthropic "Claude"
+  	  :stream t
+  	  :key gptel-api-key
+  	  ;; manually set models - upstream does not have the new ones yet
+  	  ;; data from https://platform.claude.com/docs/en/about-claude/models/overview
+  	  :models '((claude-opus-5-5
+  		     :description "Long-running agentic coding and knowledge work"
+  		     :capabilities (media tool-use cache)
+  		     :mime-types ("image/jpeg" "image/png" "image/gif"
+  				  "image/webp" "application/pdf")
+  		     :context-window 1000 ; 1M
+  		     :input-cost 4
+  		     :output-cost 20
+  		     :cutoff-date "2026-06")
+  		    (claude-sonnet-5-5
+  		     :description "The best combination of speed and intelligence"
+  		     :capabilities (media tool-use cache)
+  		     :mime-types ("image/jpeg" "image/png" "image/gif"
+  				  "image/webp" "application/pdf")
+  		     :context-window 1000 ; 1M
+  		     :input-cost 2
+  		     :output-cost 10
+  		     :cutoff-date "2026-06"))))
 
     (setq gptel-model 'claude-sonnet-5-5 ;; get list of models by 'gptel-menu' -> -m
   	gptel-backend my/gptel-claude
-  	gptel-default-mode 'org-mode)
+  	gptel-default-mode 'org-mode
+  	gptel-expert-commands t)
 
     ;; markers, necessary to have branching conversations
     (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n"
