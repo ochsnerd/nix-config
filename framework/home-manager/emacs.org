@@ -30,8 +30,8 @@ install stuff for testing.
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-  			 ("org" . "https://orgmode.org/elpa/")
-  			 ("gnu" . "http://elpa.gnu.org/packages/")))
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")))
 #+end_src
 
 ** use-package
@@ -86,7 +86,7 @@ Write auto-save-files _also_ to ~/tmp~.
 
 #+begin_src emacs-lisp
   (setq auto-save-file-name-transforms
-	`((".*" ,temporary-file-directory t)))
+        `((".*" ,temporary-file-directory t)))
 #+end_src
 
 ** Backup
@@ -95,7 +95,7 @@ Write backups to ~/tmp~.
 
 #+begin_src emacs-lisp
   (setq backup-directory-alist
-	`((".*" . ,temporary-file-directory)))
+        `((".*" . ,temporary-file-directory)))
 #+end_src
 
 ** auto revert
@@ -238,17 +238,17 @@ Basic idea:
       "Save current gptel buffer to NAME.ai.org in `my/ai-conversations-directory'."
       (interactive "sConversation name: ")
       (let ((filepath (expand-file-name (concat name ".ai.org")
-  				      my/gptel-conversations-directory)))
+                                        my/gptel-conversations-directory)))
         (make-directory my/gptel-conversations-directory t)
         (if (derived-mode-p 'org-mode)
-  	  (progn (gptel-mode 1)
-  		 (write-file filepath))
-  	(let ((content (buffer-string)))
-  	  (find-file filepath)
-  	  (erase-buffer)
-  	  (insert content)
-  	  (gptel-mode 1)
-  	  (save-buffer)))))
+            (progn (gptel-mode 1)
+                   (write-file filepath))
+          (let ((content (buffer-string)))
+            (find-file filepath)
+            (erase-buffer)
+            (insert content)
+            (gptel-mode 1)
+            (save-buffer)))))
 
     (defun my/gptel-ai-org-mode ()
       "Major mode for .ai.org files: `org-mode' with `gptel-mode' enabled."
@@ -263,75 +263,75 @@ Basic idea:
 
     :config
     (setq my/gptel-openrouter
-  	(gptel-make-openai "OpenRouter"
-  	  :host "openrouter.ai"
-  	  :endpoint "/api/v1/chat/completions"
-  	  :stream t
-  	  :key gptel-api-key
-  	  ;; data from https://openrouter.ai/api/v1/models
-  	  :models '((~z-ai/glm-latest
-  		     :description "Z.ai's latest GLM, auto-updating (text-only)"
-  		     :capabilities (tool-use json)
-  		     :context-window 1048 ; 1,048,576
-  		     :input-cost 0.03
-  		     :output-cost 12)
-  		    (~z-ai/glm-flash-latest
-  		     :description "Z.ai's fast, cheap GLM, auto-updating"
-  		     :capabilities (media tool-use json)
-  		     :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-  		     :context-window 1048 ; 1,048,576
-  		     :input-cost 0.0352
-  		     :output-cost 0.5)
-  		    (openai/gpt-6.1-sol
-  		     :description "Faster, more cost-efficient version of GPT-6"
-  		     :capabilities (media tool-use json)
-  		     :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-  		     :context-window 1050 ; 1,050,000
-  		     :input-cost 2
-  		     :output-cost 10
-  		     :cutoff-date "2026-04")
-  		    (openai/gpt-6-astra
-  		     :description "The best model for coding and agentic tasks"
-  		     :capabilities (media tool-use json)
-  		     :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-  		     :context-window 1050 ; 1,050,000
-  		     :input-cost 10
-  		     :output-cost 50
-  		     :cutoff-date "2026-04"))))
+          (gptel-make-openai "OpenRouter"
+            :host "openrouter.ai"
+            :endpoint "/api/v1/chat/completions"
+            :stream t
+            :key gptel-api-key
+            ;; data from https://openrouter.ai/api/v1/models
+            :models '((~z-ai/glm-latest
+                       :description "Z.ai's latest GLM, auto-updating (text-only)"
+                       :capabilities (tool-use json)
+                       :context-window 1048 ; 1,048,576
+                       :input-cost 0.03
+                       :output-cost 12)
+                      (~z-ai/glm-flash-latest
+                       :description "Z.ai's fast, cheap GLM, auto-updating"
+                       :capabilities (media tool-use json)
+                       :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                       :context-window 1048 ; 1,048,576
+                       :input-cost 0.0352
+                       :output-cost 0.5)
+                      (openai/gpt-6.1-sol
+                       :description "Faster, more cost-efficient version of GPT-6"
+                       :capabilities (media tool-use json)
+                       :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                       :context-window 1050 ; 1,050,000
+                       :input-cost 2
+                       :output-cost 10
+                       :cutoff-date "2026-04")
+                      (openai/gpt-6-astra
+                       :description "The best model for coding and agentic tasks"
+                       :capabilities (media tool-use json)
+                       :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+                       :context-window 1050 ; 1,050,000
+                       :input-cost 10
+                       :output-cost 50
+                       :cutoff-date "2026-04"))))
 
     (setq my/gptel-claude
-  	(gptel-make-anthropic "Claude"
-  	  :stream t
-  	  :key gptel-api-key
-  	  ;; manually set models - upstream does not have the new ones yet
-  	  ;; data from https://platform.claude.com/docs/en/about-claude/models/overview
-  	  :models '((claude-opus-5-5
-  		     :description "Long-running agentic coding and knowledge work"
-  		     :capabilities (media tool-use cache)
-  		     :mime-types ("image/jpeg" "image/png" "image/gif"
-  				  "image/webp" "application/pdf")
-  		     :context-window 1000 ; 1M
-  		     :input-cost 4
-  		     :output-cost 20
-  		     :cutoff-date "2026-06")
-  		    (claude-sonnet-5-5
-  		     :description "The best combination of speed and intelligence"
-  		     :capabilities (media tool-use cache)
-  		     :mime-types ("image/jpeg" "image/png" "image/gif"
-  				  "image/webp" "application/pdf")
-  		     :context-window 1000 ; 1M
-  		     :input-cost 2
-  		     :output-cost 10
-  		     :cutoff-date "2026-06"))))
+          (gptel-make-anthropic "Claude"
+            :stream t
+            :key gptel-api-key
+            ;; manually set models - upstream does not have the new ones yet
+            ;; data from https://platform.claude.com/docs/en/about-claude/models/overview
+            :models '((claude-opus-5-5
+                       :description "Long-running agentic coding and knowledge work"
+                       :capabilities (media tool-use cache)
+                       :mime-types ("image/jpeg" "image/png" "image/gif"
+                                    "image/webp" "application/pdf")
+                       :context-window 1000 ; 1M
+                       :input-cost 4
+                       :output-cost 20
+                       :cutoff-date "2026-06")
+                      (claude-sonnet-5-5
+                       :description "The best combination of speed and intelligence"
+                       :capabilities (media tool-use cache)
+                       :mime-types ("image/jpeg" "image/png" "image/gif"
+                                    "image/webp" "application/pdf")
+                       :context-window 1000 ; 1M
+                       :input-cost 2
+                       :output-cost 10
+                       :cutoff-date "2026-06"))))
 
     (setq gptel-model 'claude-sonnet-5-5 ;; get list of models by 'gptel-menu' -> -m
-  	gptel-backend my/gptel-claude
-  	gptel-default-mode 'org-mode
-  	gptel-expert-commands t)
+          gptel-backend my/gptel-claude
+          gptel-default-mode 'org-mode
+          gptel-expert-commands t)
 
     ;; markers, necessary to have branching conversations
     (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n"
-  	(alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
+          (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
 #+end_src
 
 * Visual changes
@@ -368,10 +368,10 @@ The scratch buffer being org-mode is more helpful than elisp.
   (column-number-mode)
   (global-display-line-numbers-mode t)
   (dolist (mode '(org-mode-hook
-		  vterm-mode-hook
-		  term-mode-hook
-		  shell-mode-hook
-		  eshell-mode-hook))
+                  vterm-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
@@ -634,7 +634,7 @@ Start via ~setsid~ to not have the ghostty window as a child process of emacs.
     "Launch a Ghostty window as a detached process and run workspace-start in the current directory."
     (interactive)
     (call-process "setsid" nil 0 nil "--fork"
-  		 "ghostty" "-e" "fish" "-C" "workspace-start"))
+                 "ghostty" "-e" "fish" "-C" "workspace-start"))
 #+end_src
 
 * Version control
@@ -678,18 +678,18 @@ Call it explicitly with bash because the shebang does not seem to work if it's i
     "(Re)start the debounce timer for ROOT."
     (my/git-sync--cancel root)
     (puthash root
-  	   (run-with-timer (or delay my/git-sync-delay) nil
-  			   #'my/git-sync--run root)
-  	   my/git-sync--timers))
+           (run-with-timer (or delay my/git-sync-delay) nil
+                           #'my/git-sync--run root)
+           my/git-sync--timers))
 
   (defun my/git-sync--sentinel (proc _event)
     (when (memq (process-status proc) '(exit signal))
       (let ((root (process-get proc 'root)))
         (remhash root my/git-sync--procs)
         (unless (zerop (process-exit-status proc))
-  	(message "git-sync failed (%d) in %s; see %s"
-  		 (process-exit-status proc) root
-  		 (buffer-name (process-buffer proc)))))))
+        (message "git-sync failed (%d) in %s; see %s"
+                 (process-exit-status proc) root
+                 (buffer-name (process-buffer proc)))))))
 
   (defun my/git-sync--run (root)
     "Run git-sync.sh in ROOT now, or retry shortly if one is already running."
@@ -700,31 +700,31 @@ Call it explicitly with bash because the shebang does not seem to work if it's i
         (my/git-sync--schedule root 30))
        ((file-exists-p script)
         (let* ((default-directory root)
-  	     (process-environment
-  	      (cons "GIT_TERMINAL_PROMPT=0" process-environment))
-  	     (name (concat "git-sync:" root))
-  	     (buf (get-buffer-create (format "*%s*" name))))
-  	(with-current-buffer buf
-  	  (goto-char (point-max))
-  	  (insert (format "\n--- %s ---\n" (current-time-string))))
-  	(let ((proc (make-process
-  		     :name name
-  		     :buffer buf
-  		     :command (list "bash" (file-local-name script) "-ns")
-  		     :connection-type 'pipe
-  		     :file-handler t
-  		     :sentinel #'my/git-sync--sentinel)))
-  	  (process-put proc 'root root)
-  	  (puthash root proc my/git-sync--procs)))))))
+             (process-environment
+              (cons "GIT_TERMINAL_PROMPT=0" process-environment))
+             (name (concat "git-sync:" root))
+             (buf (get-buffer-create (format "*%s*" name))))
+        (with-current-buffer buf
+          (goto-char (point-max))
+          (insert (format "\n--- %s ---\n" (current-time-string))))
+        (let ((proc (make-process
+                     :name name
+                     :buffer buf
+                     :command (list "bash" (file-local-name script) "-ns")
+                     :connection-type 'pipe
+                     :file-handler t
+                     :sentinel #'my/git-sync--sentinel)))
+          (process-put proc 'root root)
+          (puthash root proc my/git-sync--procs)))))))
 
   (defun my/git-sync--buffer-root (&optional buffer)
     "Return the repo root of BUFFER's file if it should be git-synced."
     (when-let* ((file (buffer-file-name (or buffer (current-buffer))))
-  	      (root (vc-git-root file))
-  	      (root (expand-file-name root))
-  	      ((file-exists-p (expand-file-name "git-sync.sh" root)))
-  	      (git-dir (file-name-as-directory (expand-file-name ".git" root)))
-  	      ((not (string-prefix-p git-dir (expand-file-name file)))))
+              (root (vc-git-root file))
+              (root (expand-file-name root))
+              ((file-exists-p (expand-file-name "git-sync.sh" root)))
+              (git-dir (file-name-as-directory (expand-file-name ".git" root)))
+              ((not (string-prefix-p git-dir (expand-file-name file)))))
       root))
 
   (defun my/git-sync--buffer-schedule (&optional buffer)
@@ -869,9 +869,9 @@ This defines ~my/eglot-workspace-configs~ for later language-specific blocks to 
     :config
     (setq mweb-default-major-mode 'html-mode)
     (setq mweb-tags
-	  '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-	    (js-mode  "<script[^>]*>" "</script>")
-	    (css-mode "<style[^>]*>" "</style>")))
+          '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+            (js-mode  "<script[^>]*>" "</script>")
+            (css-mode "<style[^>]*>" "</style>")))
     (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
     (multi-web-global-mode 1))
 #+end_src
@@ -1132,15 +1132,15 @@ Share the daily-directory with roam on my phone.
     :config
     (defvar my/org-roam-daily-head
       (concat ":PROPERTIES:\n"
-  	    ":ID:       daily-%<%Y-%m-%d>\n"
-  	    ":END:\n"
-  	    "#+title: %<%Y-%m-%d>\n"
-  	    "* Tasks\n"
-  	    "* Journal\n"
-  	    "* Refile\n"))
+            ":ID:       daily-%<%Y-%m-%d>\n"
+            ":END:\n"
+            "#+title: %<%Y-%m-%d>\n"
+            "* Tasks\n"
+            "* Journal\n"
+            "* Refile\n"))
 
     (setq org-roam-dailies-capture-templates
-  	`(("d" "default" entry "* %?"
+        `(("d" "default" entry "* %?"
              :target (file+head+olp "%<%Y-%m-%d>.org" ,my/org-roam-daily-head ("Refile")))
             ("j" "journal" entry "* %?"
              :target (file+head+olp "%<%Y-%m-%d>.org" ,my/org-roam-daily-head ("Journal")))
@@ -1180,4 +1180,3 @@ https://github.com/winny-/emacs.d
 ** M-EMACS
 
 https://github.com/MatthewZMD/.emacs.d
-
