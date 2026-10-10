@@ -62,6 +62,14 @@
 
       pkgs = nixpkgs.legacyPackages.${system};
 
+      deployPkgs = pkgs.extend (
+        final: prev: {
+          deploy-rs = (deploy-rs.overlays.default final prev).deploy-rs // {
+            deploy-rs = pkgs.deploy-rs;
+          };
+        }
+      );
+
       treefmtEval = treefmt-nix.lib.evalModule pkgs {
         projectRootFile = "flake.nix";
         programs.nixfmt.enable = true;
@@ -78,7 +86,7 @@
         # make formatting fail `nix flake check`
         formatting = treefmtEval.config.build.check self;
       }
-      // deploy-rs.lib.${system}.deployChecks self.deploy;
+      // deployPkgs.deploy-rs.lib.deployChecks self.deploy;
 
       overlays = import ./overlays { inherit inputs; };
       nixosModules = import ./modules/nixos;
@@ -90,7 +98,7 @@
         profiles.system = {
           sshUser = "david";
           user = "root";
-          path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.hetzner;
+          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.hetzner;
           magicRollback = true;
           autoRollback = true;
         };
@@ -130,7 +138,7 @@
         program = pkgs.lib.getExe (
           pkgs.writeShellApplication {
             name = "deploy-hetzner";
-            runtimeInputs = [ deploy-rs.packages.${system}.default ];
+            runtimeInputs = [ pkgs.deploy-rs ];
             text = ''
               exec deploy .#hetzner "$@"
             '';
